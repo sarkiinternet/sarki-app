@@ -15,6 +15,8 @@ const scrypt = promisify(scryptCallback);
 const PORT = Number(process.env.PORT || 3000);
 const HOST = "0.0.0.0";
 const COOKIE_NAME = "sarki_session";
+const SESSION_IDLE_TIMEOUT_MINUTES = 5;
+const SESSION_EXPIRATION_EXPRESSION = `DATE_ADD(CURRENT_TIMESTAMP, INTERVAL ${SESSION_IDLE_TIMEOUT_MINUTES} MINUTE)`;
 const PASSWORD_OPTIONS = { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
 const PASSWORD_HASH_BYTES = 64;
 const DUMMY_PASSWORD_SALT = Buffer.alloc(16, 0x73);
@@ -235,7 +237,8 @@ async function signup(request, response) {
             [userId],
         );
         await connection.execute(
-            "INSERT INTO sarki_sessions (token_hash, user_id, expires_at) VALUES (?, ?, NULL)",
+            `INSERT INTO sarki_sessions (token_hash, user_id, expires_at)
+             VALUES (?, ?, ${SESSION_EXPIRATION_EXPRESSION})`,
             [tokenHash, userId],
         );
         await connection.commit();
@@ -286,7 +289,8 @@ async function login(request, response) {
     const token = randomBytes(32).toString("base64url");
     const tokenHash = hashSessionToken(token);
     await getPool().execute(
-        "INSERT INTO sarki_sessions (token_hash, user_id, expires_at) VALUES (?, ?, NULL)",
+        `INSERT INTO sarki_sessions (token_hash, user_id, expires_at)
+         VALUES (?, ?, ${SESSION_EXPIRATION_EXPRESSION})`,
         [tokenHash, account.id],
     );
     issueSessionCookie(request, response, token);
@@ -302,13 +306,21 @@ async function accountForSession(request) {
     const token = readSessionToken(request);
     if (!token) return null;
 
+    const tokenHash = hashSessionToken(token);
+    await getPool().execute(
+        `UPDATE sarki_sessions
+         SET expires_at = ${SESSION_EXPIRATION_EXPRESSION}
+         WHERE token_hash = ? AND expires_at > CURRENT_TIMESTAMP`,
+        [tokenHash],
+    );
+
     const [rows] = await getPool().execute(
         `SELECT u.id, u.phone_e164, w.balance_kobo
          FROM sarki_sessions AS s
          JOIN sarki_users AS u ON u.id = s.user_id
          JOIN sarki_wallets AS w ON w.user_id = u.id
-         WHERE s.token_hash = ? AND (s.expires_at IS NULL OR s.expires_at > CURRENT_TIMESTAMP)`,
-        [hashSessionToken(token)],
+         WHERE s.token_hash = ? AND s.expires_at > CURRENT_TIMESTAMP`,
+        [tokenHash],
     );
     return rows[0] || null;
 }
@@ -324,6 +336,12 @@ async function requireAccount(request) {
     const account = await accountForSession(request);
     if (!account) throw new HttpError(401, "Log in to continue.");
     return account;
+}
+
+async function refreshSession(request, response) {
+    requireSameOrigin(request);
+    await requireAccount(request);
+    return sendJson(response, 200, { ok: true });
 }
 
 async function listDataOrders(request, response) {
@@ -371,8 +389,16 @@ async function handleApi(request, response, pathname) {
     }
 
     if (pathname === "/api/auth/me" && request.method === "GET") {
+        const hadSessionCookie = Boolean(readSessionToken(request));
         const user = await currentUser(request);
-        return sendJson(response, 200, { user });
+        return sendJson(response, 200, {
+            user,
+            sessionExpired: hadSessionCookie && !user,
+        });
+    }
+
+    if (pathname === "/api/auth/activity" && request.method === "POST") {
+        return refreshSession(request, response);
     }
 
     if (pathname === "/api/auth/signup" && request.method === "POST") {

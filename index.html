@@ -1736,11 +1736,17 @@ input::placeholder, select::placeholder {
         const purchaseError = document.getElementById('purchase-error');
         const purchaseMessage = document.getElementById('purchase-message');
         const orderHistoryList = document.getElementById('order-history-list');
+        const SESSION_IDLE_TIMEOUT_MS = 5 * 60 * 1000;
+        const SESSION_REFRESH_INTERVAL_MS = 10 * 1000;
         let currentUser = null;
         let dataPlans = [];
         let dataPlansLoaded = false;
         let dataPlansLoading = false;
         let selectedOfferId = null;
+        let sessionIdleTimer = null;
+        let lastUserActivityAt = 0;
+        let lastServerActivityAt = 0;
+        let sessionRefreshInFlight = false;
         let purchaseInProgress = false;
         let checkingOrderHistory = false;
         let hasUnresolvedOrder = false;
@@ -1838,9 +1844,79 @@ input::placeholder, select::placeholder {
             const response = await fetch(path, options);
             const payload = await response.json().catch(() => null);
             if (!response.ok) {
-                throw new Error(payload?.error || 'The request could not be completed. Please try again.');
+                const error = new Error(payload?.error || 'The request could not be completed. Please try again.');
+                error.status = response.status;
+                if (
+                    response.status === 401
+                    && path !== '/api/auth/login'
+                    && path !== '/api/auth/signup'
+                ) {
+                    expireSession();
+                }
+                throw error;
             }
             return payload;
+        }
+
+        function scheduleSessionExpiry() {
+            window.clearTimeout(sessionIdleTimer);
+            const remaining = SESSION_IDLE_TIMEOUT_MS - (Date.now() - lastUserActivityAt);
+            if (remaining <= 0) {
+                expireSession();
+                return;
+            }
+            sessionIdleTimer = window.setTimeout(expireSession, remaining);
+        }
+
+        function beginSessionTracking() {
+            window.clearTimeout(sessionIdleTimer);
+            lastUserActivityAt = Date.now();
+            lastServerActivityAt = Date.now();
+            scheduleSessionExpiry();
+        }
+
+        function expireSession() {
+            if (!currentUser) return;
+            currentUser = null;
+            window.clearTimeout(sessionIdleTimer);
+            sessionIdleTimer = null;
+            lastUserActivityAt = 0;
+            lastServerActivityAt = 0;
+            updateLandingActions();
+            showLoginPage();
+            document.getElementById('login-error').textContent =
+                'Your session ended after 5 minutes of inactivity. Please log in again.';
+        }
+
+        async function refreshServerSession() {
+            if (!currentUser || sessionRefreshInFlight) return;
+            sessionRefreshInFlight = true;
+            try {
+                await requestJson('/api/auth/activity', { method: 'POST' });
+                lastServerActivityAt = Date.now();
+            } catch {
+                // A later authenticated request will log the user out if the session has expired.
+            } finally {
+                sessionRefreshInFlight = false;
+            }
+        }
+
+        function recordUserActivity() {
+            if (!currentUser) return;
+            lastUserActivityAt = Date.now();
+            scheduleSessionExpiry();
+            if (Date.now() - lastServerActivityAt >= SESSION_REFRESH_INTERVAL_MS) {
+                refreshServerSession();
+            }
+        }
+
+        function checkSessionOnReturn() {
+            if (!currentUser) return;
+            if (Date.now() - lastUserActivityAt >= SESSION_IDLE_TIMEOUT_MS) {
+                expireSession();
+            } else {
+                scheduleSessionExpiry();
+            }
         }
 
         function setPlansStatus(message) {
@@ -2086,6 +2162,7 @@ input::placeholder, select::placeholder {
                 const credentials = Object.fromEntries(new FormData(form).entries());
                 const result = await requestJson(endpoint, { method: 'POST', body: credentials });
                 currentUser = result.user;
+                beginSessionTracking();
                 authConnectionStatus.hidden = true;
                 authConnectionStatus.textContent = '';
                 document.getElementById('wallet-error').textContent = '';
@@ -2107,7 +2184,14 @@ input::placeholder, select::placeholder {
                 authConnectionStatus.hidden = true;
                 authConnectionStatus.textContent = '';
                 updateLandingActions();
-                if (currentUser) showWalletPage({ focus: false });
+                if (currentUser) {
+                    beginSessionTracking();
+                    showWalletPage({ focus: false });
+                } else if (result.sessionExpired) {
+                    showLoginPage();
+                    document.getElementById('login-error').textContent =
+                        'Your session ended. Please log in again.';
+                }
             } catch {
                 authConnectionStatus.textContent = 'Account services are temporarily unavailable. Please try again shortly.';
                 authConnectionStatus.hidden = false;
@@ -2134,6 +2218,13 @@ input::placeholder, select::placeholder {
         document.getElementById('plans-wallet-button').addEventListener('click', () => showWalletPage());
         document.getElementById('plans-retry-button').addEventListener('click', loadDataPlans);
         document.getElementById('purchase-back-button').addEventListener('click', showPlansPage);
+        ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'wheel'].forEach((eventName) => {
+            document.addEventListener(eventName, recordUserActivity, { passive: true });
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') checkSessionOnReturn();
+        });
+        window.addEventListener('focus', checkSessionOnReturn);
 
         restoreSession();
     </script>
