@@ -421,6 +421,13 @@ input::placeholder, select::placeholder {
             font-size: 12px;
         }
 
+        .landing-plans-status {
+            margin: 12px 0 0;
+            color: #8a5d2b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
         .bundle-showcase {
             position: relative;
             min-height: 400px;
@@ -1502,24 +1509,25 @@ input::placeholder, select::placeholder {
                     <span class="hero-note">Quick, easy bundle purchasing</span>
                 </div>
                 <p id="auth-connection-status" class="auth-error" role="status" aria-live="polite" hidden></p>
+                <p id="landing-plans-status" class="landing-plans-status" role="status" aria-live="polite" hidden></p>
             </section>
 
-            <section class="bundle-showcase" aria-label="Featured data bundle">
+            <section class="bundle-showcase" aria-label="Available MTN data bundles">
                 <div class="bundle-orbit" aria-hidden="true"></div>
                 <article class="bundle-card">
                     <div class="bundle-card-top">
                         <span>Featured bundle</span>
                         <span class="mtn-logo" role="img" aria-label="MTN">MTN</span>
                     </div>
-                    <p class="bundle-amount">1<small>GB</small></p>
-                    <p class="bundle-price">₦450</p>
+                    <p id="featured-bundle-size" class="bundle-amount">—</p>
+                    <p id="featured-bundle-price" class="bundle-price">—</p>
                     <div class="bundle-card-bottom">
-                        <span>More room to do more</span>
+                        <span>Available now</span>
                         <strong>SARKI</strong>
                     </div>
                 </article>
-                <div class="other-bundles" aria-label="Other data bundles">
-                    <span class="bundle-price-chip"><strong>MTN 1 GB</strong><small>Available now</small></span>
+                <div id="landing-other-bundles" class="other-bundles" aria-label="Other available MTN data bundles">
+                    <span class="bundle-price-chip"><strong>Available bundles</strong><small>Loading…</small></span>
                 </div>
             </section>
         </div>
@@ -1725,6 +1733,10 @@ input::placeholder, select::placeholder {
         const authConnectionStatus = document.getElementById('auth-connection-status');
         const landingLoginButton = document.getElementById('login-button');
         const heroLoginButton = document.querySelector('[data-open-login]');
+        const featuredBundleSize = document.getElementById('featured-bundle-size');
+        const featuredBundlePrice = document.getElementById('featured-bundle-price');
+        const landingOtherBundles = document.getElementById('landing-other-bundles');
+        const landingPlansStatus = document.getElementById('landing-plans-status');
         const plansList = document.getElementById('plans-list');
         const plansError = document.getElementById('plans-error');
         const plansRetryButton = document.getElementById('plans-retry-button');
@@ -1741,7 +1753,7 @@ input::placeholder, select::placeholder {
         let currentUser = null;
         let dataPlans = [];
         let dataPlansLoaded = false;
-        let dataPlansLoading = false;
+        let dataPlansLoadPromise = null;
         let selectedOfferId = null;
         let sessionIdleTimer = null;
         let lastUserActivityAt = 0;
@@ -1971,29 +1983,112 @@ input::placeholder, select::placeholder {
             });
         }
 
-        async function loadDataPlans() {
-            if (dataPlansLoading || dataPlansLoaded) return;
-            dataPlansLoading = true;
+        function setLandingPlansError(message) {
+            featuredBundleSize.textContent = '—';
+            featuredBundlePrice.textContent = '—';
+            landingOtherBundles.replaceChildren();
+            const chip = document.createElement('span');
+            chip.className = 'bundle-price-chip';
+            const title = document.createElement('strong');
+            title.textContent = 'Bundles unavailable';
+            const note = document.createElement('small');
+            note.textContent = 'Try again shortly';
+            chip.append(title, note);
+            landingOtherBundles.append(chip);
+            landingPlansStatus.textContent = message;
+            landingPlansStatus.hidden = false;
+        }
+
+        function renderLandingBundles() {
+            const [featuredPlan, ...otherPlans] = dataPlans;
+            if (!featuredPlan) {
+                setLandingPlansError('No data bundles are available right now.');
+                return;
+            }
+
+            featuredBundleSize.replaceChildren();
+            const sizeParts = String(featuredPlan.size).match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+            if (sizeParts) {
+                featuredBundleSize.append(document.createTextNode(sizeParts[1]));
+                if (sizeParts[2]) {
+                    const unit = document.createElement('small');
+                    unit.textContent = sizeParts[2];
+                    featuredBundleSize.append(unit);
+                }
+            } else {
+                featuredBundleSize.textContent = featuredPlan.size;
+            }
+            featuredBundlePrice.textContent = formatPlanPrice(featuredPlan.amountKobo);
+
+            landingOtherBundles.replaceChildren();
+            otherPlans.forEach((plan) => {
+                const chip = document.createElement('span');
+                chip.className = 'bundle-price-chip';
+                const name = document.createElement('strong');
+                name.textContent = `MTN ${plan.size}`;
+                const price = document.createElement('small');
+                price.textContent = formatPlanPrice(plan.amountKobo);
+                chip.append(name, price);
+                landingOtherBundles.append(chip);
+            });
+            if (!otherPlans.length) {
+                const chip = document.createElement('span');
+                chip.className = 'bundle-price-chip';
+                const name = document.createElement('strong');
+                name.textContent = 'All bundles shown';
+                const note = document.createElement('small');
+                note.textContent = 'Available now';
+                chip.append(name, note);
+                landingOtherBundles.append(chip);
+            }
+            landingPlansStatus.textContent = '';
+            landingPlansStatus.hidden = true;
+        }
+
+        function loadDataPlans() {
+            if (dataPlansLoaded) {
+                renderDataPlans();
+                renderLandingBundles();
+                return Promise.resolve(dataPlans);
+            }
+            if (dataPlansLoadPromise) return dataPlansLoadPromise;
+
             plansError.hidden = true;
             plansRetryButton.hidden = true;
             setPlansStatus('Loading plans…');
 
-            try {
-                const result = await requestJson('/api/data/plans');
-                if (!Array.isArray(result.plans) || result.plans.length === 0) {
-                    throw new Error('No data plans are available right now.');
+            dataPlansLoadPromise = (async () => {
+                try {
+                    const result = await requestJson('/api/data/plans');
+                    if (
+                        !Array.isArray(result?.plans)
+                        || result.plans.length === 0
+                        || result.plans.some((plan) => (
+                            !plan
+                            || typeof plan.offerId !== 'string'
+                            || typeof plan.size !== 'string'
+                            || !/^\d+$/.test(String(plan.amountKobo))
+                        ))
+                    ) {
+                        throw new Error('No data plans are available right now.');
+                    }
+                    dataPlans = result.plans;
+                    renderDataPlans();
+                    renderLandingBundles();
+                    dataPlansLoaded = true;
+                    return dataPlans;
+                } catch {
+                    setPlansStatus('Plans could not be loaded.');
+                    plansError.textContent = 'Please check your connection and try again.';
+                    plansError.hidden = false;
+                    plansRetryButton.hidden = false;
+                    setLandingPlansError('Available data bundles could not be loaded. Please try again shortly.');
+                    return null;
+                } finally {
+                    dataPlansLoadPromise = null;
                 }
-                dataPlans = result.plans;
-                dataPlansLoaded = true;
-                renderDataPlans();
-            } catch {
-                setPlansStatus('Plans could not be loaded.');
-                plansError.textContent = 'Please check your connection and try again.';
-                plansError.hidden = false;
-                plansRetryButton.hidden = false;
-            } finally {
-                dataPlansLoading = false;
-            }
+            })();
+            return dataPlansLoadPromise;
         }
 
         function purchaseKeyStorageName() {
@@ -2226,6 +2321,7 @@ input::placeholder, select::placeholder {
         });
         window.addEventListener('focus', checkSessionOnReturn);
 
+        loadDataPlans();
         restoreSession();
     </script>
 </body>
