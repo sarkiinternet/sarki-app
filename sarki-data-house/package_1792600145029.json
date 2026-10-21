@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/sarki-data-house",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "build": "mkdir -p dist/public && cp index.html dist/public/index.html"
+  },
+  "dependencies": {
+    "mysql2": "^3.24.6"
+  }
+}
