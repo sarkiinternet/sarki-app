@@ -8,7 +8,7 @@ import { closePool, getPool, pool } from "./database.mjs";
 import {
     DataSalesError,
     listRecentDataOrders,
-    purchaseData,
+    purchaseData as submitDataPurchase,
 } from "./data-sales.mjs";
 const scrypt = promisify(scryptCallback);
 const PORT = Number(process.env.PORT || 3000);
@@ -343,7 +343,7 @@ async function purchaseData(request, response) {
     }
 
     try {
-        const result = await purchaseData(getPool(), {
+        const result = await submitDataPurchase(getPool(), {
             userId: account.id,
             phone,
             idempotencyKey: body.idempotencyKey,
