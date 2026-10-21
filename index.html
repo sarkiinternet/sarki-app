@@ -1097,6 +1097,143 @@ input::placeholder, select::placeholder {
             overflow-wrap: anywhere;
         }
 
+        #plans-page .screen-shell {
+            width: min(720px, calc(100% - 40px));
+            padding-top: 54px;
+        }
+
+        .plans-panel {
+            padding: 30px;
+            border: 1px solid rgba(23, 33, 28, 0.08);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 18px 48px rgba(24, 59, 43, 0.08);
+        }
+
+        .plans-panel .screen-description {
+            margin-bottom: 24px;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .plan-table-wrap {
+            overflow: hidden;
+            border: 1px solid #e1e9dd;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .plan-table th {
+            padding: 14px 16px;
+            background: #f5f8f2;
+            color: #718073;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .plan-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #edf1ea;
+        }
+
+        .plan-table tbody tr {
+            transition: background 160ms ease;
+        }
+
+        .plan-table tbody tr:hover,
+        .plan-table tbody tr.is-selected {
+            background: #fbfdf8;
+        }
+
+        .plan-bundle {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .plan-network {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            min-height: 30px;
+            padding: 0 8px;
+            border-radius: 9px;
+            background: #edf6e7;
+            color: #527a37;
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0.07em;
+        }
+
+        .plan-size {
+            color: var(--ink);
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .plan-price {
+            color: var(--ink);
+            font-size: 17px;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .plan-select-button {
+            min-height: 40px;
+            padding: 0 15px;
+            border: 1px solid #dce9d8;
+            border-radius: 999px;
+            background: #f0f6eb;
+            color: #31513b;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+        }
+
+        .plan-select-button:hover {
+            transform: translateY(-1px);
+            border-color: #b7d39f;
+            background: #e6f2dc;
+        }
+
+        .plan-select-button:focus-visible,
+        .plan-retry-button:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        .plan-table-status {
+            padding: 24px 16px !important;
+            color: #718073;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .plan-retry-button {
+            margin-top: 12px;
+        }
+
         #purchase-page .screen-shell {
             width: min(560px, calc(100% - 36px));
             padding-top: 38px;
@@ -1308,8 +1445,28 @@ input::placeholder, select::placeholder {
 
             .wallet-card,
             .purchase-panel,
+            .plans-panel,
             .auth-panel {
                 padding: 22px;
+            }
+
+            .plan-table th,
+            .plan-table td {
+                padding: 12px 9px;
+            }
+
+            .plan-size {
+                font-size: 14px;
+            }
+
+            .plan-price {
+                font-size: 15px;
+            }
+
+            .plan-select-button {
+                min-height: 38px;
+                padding: 0 10px;
+                font-size: 11px;
             }
 
             .wallet-actions {
@@ -1473,7 +1630,42 @@ input::placeholder, select::placeholder {
             <div class="wallet-actions">
                 <button id="data-button" class="wallet-action wallet-action-data" type="button">DATA <span aria-hidden="true">→</span></button>
             </div>
-            <p class="wallet-funding-notice">Wallet top-ups are not available yet. Your balance must be at least ₦450 to buy data.</p>
+            <p class="wallet-funding-notice">Wallet top-ups are not available yet. Your balance must cover the selected bundle.</p>
+        </div>
+    </main>
+
+    <main id="plans-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span>SARKI</span>
+            </div>
+            <button id="plans-wallet-button" class="screen-back-button" type="button">Wallet</button>
+        </header>
+
+        <div class="screen-shell">
+            <section class="plans-panel">
+                <p class="screen-kicker">MTN data</p>
+                <h1 id="plans-title" class="screen-title" tabindex="-1">Choose a data plan</h1>
+                <p class="screen-description">Pick a bundle, then enter the recipient number.</p>
+
+                <div class="plan-table-wrap">
+                    <table class="plan-table" aria-label="Available MTN data plans">
+                        <thead>
+                            <tr>
+                                <th scope="col">Bundle</th>
+                                <th scope="col">Price</th>
+                                <th scope="col"><span class="visually-hidden">Select plan</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="plans-list">
+                            <tr><td class="plan-table-status" colspan="3">Loading plans…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="plans-error" class="auth-error" role="alert" aria-live="polite" hidden></p>
+                <button id="plans-retry-button" class="screen-back-button plan-retry-button" type="button" hidden>Try again</button>
+            </section>
         </div>
     </main>
 
@@ -1483,19 +1675,19 @@ input::placeholder, select::placeholder {
                 <span class="brand-mark" aria-hidden="true">S</span>
                 <span>SARKI</span>
             </div>
-            <button id="purchase-back-button" class="screen-back-button" type="button">Wallet</button>
+            <button id="purchase-back-button" class="screen-back-button" type="button">Plans</button>
         </header>
 
         <div class="screen-shell">
             <section class="purchase-panel">
                 <p class="screen-kicker">Stay connected</p>
                 <h1 class="screen-title">Buy MTN data</h1>
-                <p class="screen-description">Purchase the available 1 GB bundle using your SARKI wallet.</p>
+                <p class="screen-description">Enter the recipient number for your selected MTN bundle.</p>
 
-                <div class="selected-bundle" aria-label="Selected bundle: MTN 1 GB for 450 naira">
+                <div id="selected-bundle" class="selected-bundle" aria-live="polite">
                     <span>MTN</span>
-                    <strong>1 GB</strong>
-                    <strong>₦450</strong>
+                    <strong id="selected-bundle-size">Choose a plan</strong>
+                    <strong id="selected-bundle-price">—</strong>
                 </div>
 
                 <form id="purchase-form">
@@ -1511,7 +1703,7 @@ input::placeholder, select::placeholder {
                     <p id="purchase-error" class="auth-error" role="alert" aria-live="polite" hidden></p>
                     <p id="purchase-message" class="purchase-message" role="status" aria-live="polite" hidden></p>
 
-                    <button id="purchase-submit" type="submit" class="submit-btn">Buy 1 GB — ₦450</button>
+                    <button id="purchase-submit" type="submit" class="submit-btn" disabled>Choose a plan</button>
                 </form>
 
                 <section class="order-history" aria-labelledby="order-history-title">
@@ -1527,17 +1719,28 @@ input::placeholder, select::placeholder {
         const loginPage = document.getElementById('login-page');
         const signupPage = document.getElementById('signup-page');
         const walletPage = document.getElementById('wallet-page');
+        const plansPage = document.getElementById('plans-page');
         const purchasePage = document.getElementById('purchase-page');
-        const pages = [landingPage, loginPage, signupPage, walletPage, purchasePage];
+        const pages = [landingPage, loginPage, signupPage, walletPage, plansPage, purchasePage];
         const authConnectionStatus = document.getElementById('auth-connection-status');
         const landingLoginButton = document.getElementById('login-button');
         const heroLoginButton = document.querySelector('[data-open-login]');
+        const plansList = document.getElementById('plans-list');
+        const plansError = document.getElementById('plans-error');
+        const plansRetryButton = document.getElementById('plans-retry-button');
+        const selectedBundle = document.getElementById('selected-bundle');
+        const selectedBundleSize = document.getElementById('selected-bundle-size');
+        const selectedBundlePrice = document.getElementById('selected-bundle-price');
         const purchaseForm = document.getElementById('purchase-form');
         const purchaseSubmit = document.getElementById('purchase-submit');
         const purchaseError = document.getElementById('purchase-error');
         const purchaseMessage = document.getElementById('purchase-message');
         const orderHistoryList = document.getElementById('order-history-list');
         let currentUser = null;
+        let dataPlans = [];
+        let dataPlansLoaded = false;
+        let dataPlansLoading = false;
+        let selectedOfferId = null;
         let purchaseInProgress = false;
         let checkingOrderHistory = false;
         let hasUnresolvedOrder = false;
@@ -1564,6 +1767,15 @@ input::placeholder, select::placeholder {
             return `₦${naira.toLocaleString('en-NG')}.${remainingKobo}`;
         }
 
+        function formatPlanPrice(amountKobo) {
+            const kobo = BigInt(amountKobo);
+            const naira = kobo / 100n;
+            const remainingKobo = kobo % 100n;
+            return remainingKobo === 0n
+                ? `₦${naira.toLocaleString('en-NG')}`
+                : formatBalance(String(kobo));
+        }
+
         function showLoginPage() {
             if (currentUser) return showWalletPage();
             document.getElementById('login-error').textContent = '';
@@ -1582,9 +1794,27 @@ input::placeholder, select::placeholder {
             displayPage(walletPage, focus ? document.getElementById('data-button') : null);
         }
 
-        function showPurchasePage() {
+        function showPlansPage() {
             if (!currentUser) return showLoginPage();
+            displayPage(plansPage, document.getElementById('plans-title'));
+            if (dataPlansLoaded) renderDataPlans();
+            else loadDataPlans();
+        }
+
+        function showPurchasePage(offerId) {
+            if (!currentUser) return showLoginPage();
+            if (offerId) selectedOfferId = offerId;
+            const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
+            if (!selectedPlan) return showPlansPage();
+
             document.getElementById('purchase-balance').textContent = formatBalance(currentUser.balanceKobo);
+            selectedBundleSize.textContent = selectedPlan.size;
+            selectedBundlePrice.textContent = formatPlanPrice(selectedPlan.amountKobo);
+            selectedBundle.setAttribute(
+                'aria-label',
+                `Selected MTN ${selectedPlan.size} bundle for ${formatPlanPrice(selectedPlan.amountKobo)}`
+            );
+            updatePurchaseButton();
             displayPage(purchasePage, document.getElementById('recipient-phone'));
             loadRecentOrders();
         }
@@ -1613,6 +1843,83 @@ input::placeholder, select::placeholder {
             return payload;
         }
 
+        function setPlansStatus(message) {
+            plansList.replaceChildren();
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.className = 'plan-table-status';
+            cell.colSpan = 3;
+            cell.textContent = message;
+            row.append(cell);
+            plansList.append(row);
+        }
+
+        function renderDataPlans() {
+            plansList.replaceChildren();
+            dataPlans.forEach((plan) => {
+                const row = document.createElement('tr');
+                row.classList.toggle('is-selected', plan.offerId === selectedOfferId);
+
+                const bundleCell = document.createElement('td');
+                const bundle = document.createElement('div');
+                bundle.className = 'plan-bundle';
+                const network = document.createElement('span');
+                network.className = 'plan-network';
+                network.textContent = 'MTN';
+                const size = document.createElement('strong');
+                size.className = 'plan-size';
+                size.textContent = plan.size;
+                bundle.append(network, size);
+                bundleCell.append(bundle);
+
+                const priceCell = document.createElement('td');
+                const price = document.createElement('strong');
+                price.className = 'plan-price';
+                price.textContent = formatPlanPrice(plan.amountKobo);
+                priceCell.append(price);
+
+                const actionCell = document.createElement('td');
+                const chooseButton = document.createElement('button');
+                chooseButton.type = 'button';
+                chooseButton.className = 'plan-select-button';
+                chooseButton.textContent = 'Choose';
+                chooseButton.setAttribute(
+                    'aria-label',
+                    `Choose MTN ${plan.size} for ${formatPlanPrice(plan.amountKobo)}`
+                );
+                chooseButton.addEventListener('click', () => showPurchasePage(plan.offerId));
+                actionCell.append(chooseButton);
+
+                row.append(bundleCell, priceCell, actionCell);
+                plansList.append(row);
+            });
+        }
+
+        async function loadDataPlans() {
+            if (dataPlansLoading || dataPlansLoaded) return;
+            dataPlansLoading = true;
+            plansError.hidden = true;
+            plansRetryButton.hidden = true;
+            setPlansStatus('Loading plans…');
+
+            try {
+                const result = await requestJson('/api/data/plans');
+                if (!Array.isArray(result.plans) || result.plans.length === 0) {
+                    throw new Error('No data plans are available right now.');
+                }
+                dataPlans = result.plans;
+                dataPlansLoaded = true;
+                renderDataPlans();
+            } catch {
+                setPlansStatus('Plans could not be loaded.');
+                plansError.textContent = 'Please check your connection and try again.';
+                plansError.hidden = false;
+                plansRetryButton.hidden = false;
+            } finally {
+                dataPlansLoading = false;
+            }
+        }
+
         function purchaseKeyStorageName() {
             return `sarki-purchase-key:${currentUser?.phone || 'guest'}`;
         }
@@ -1632,12 +1939,15 @@ input::placeholder, select::placeholder {
         }
 
         function updatePurchaseButton() {
-            purchaseSubmit.disabled = purchaseInProgress || checkingOrderHistory || hasUnresolvedOrder;
+            const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
+            purchaseSubmit.disabled = purchaseInProgress || checkingOrderHistory || hasUnresolvedOrder || !selectedPlan;
             purchaseSubmit.textContent = purchaseInProgress
                 ? 'Submitting…'
                 : hasUnresolvedOrder
                     ? 'Order awaiting confirmation'
-                    : 'Buy 1 GB — ₦450';
+                    : selectedPlan
+                        ? `Buy ${selectedPlan.size} — ${formatPlanPrice(selectedPlan.amountKobo)}`
+                        : 'Choose a plan';
         }
 
         function statusLabel(status) {
@@ -1696,11 +2006,12 @@ input::placeholder, select::placeholder {
                     clearPurchaseIdempotencyKey();
                 }
 
-                hasUnresolvedOrder = orders.some((order) => (
+                const unresolvedOrder = orders.find((order) => (
                     ['pending', 'processing'].includes(order.status)
                 ));
-                if (hasUnresolvedOrder) {
-                    purchaseMessage.textContent = 'An earlier order is awaiting provider confirmation. Its ₦450 debit is held to prevent a duplicate purchase.';
+                hasUnresolvedOrder = Boolean(unresolvedOrder);
+                if (unresolvedOrder) {
+                    purchaseMessage.textContent = `An earlier ${unresolvedOrder.product} order is awaiting provider confirmation. Its ${formatPlanPrice(unresolvedOrder.amountKobo)} debit is held to prevent a duplicate purchase.`;
                     purchaseMessage.dataset.state = 'pending';
                     purchaseMessage.hidden = false;
                 } else if (purchaseMessage.dataset.state === 'pending') {
@@ -1736,7 +2047,8 @@ input::placeholder, select::placeholder {
                     body: {
                         phone: document.getElementById('recipient-phone').value,
                         portedNumber: document.getElementById('ported-number').checked,
-                        idempotencyKey: getPurchaseIdempotencyKey()
+                        idempotencyKey: getPurchaseIdempotencyKey(),
+                        offerId: selectedOfferId
                     }
                 });
                 currentUser.balanceKobo = result.balanceKobo;
@@ -1818,8 +2130,10 @@ input::placeholder, select::placeholder {
         document.getElementById('signup-form').addEventListener('submit', (event) => {
             submitAuthForm(event, event.currentTarget, '/api/auth/signup', document.getElementById('signup-error'));
         });
-        document.getElementById('data-button').addEventListener('click', showPurchasePage);
-        document.getElementById('purchase-back-button').addEventListener('click', () => showWalletPage());
+        document.getElementById('data-button').addEventListener('click', showPlansPage);
+        document.getElementById('plans-wallet-button').addEventListener('click', () => showWalletPage());
+        document.getElementById('plans-retry-button').addEventListener('click', loadDataPlans);
+        document.getElementById('purchase-back-button').addEventListener('click', showPlansPage);
 
         restoreSession();
     </script>

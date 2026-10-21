@@ -1,10 +1,34 @@
 import { randomUUID } from "node:crypto";
 
-export const MTN_ONE_GB_OFFER = Object.freeze({
-    network: 1,
-    plan: 669,
-    amountKobo: 45000,
-    name: "MTN 1 GB",
+export const DATA_OFFERS = Object.freeze({
+    "mtn-1gb": Object.freeze({
+        network: 1,
+        plan: 669,
+        amountKobo: 45000,
+        name: "MTN 1 GB",
+        size: "1 GB",
+    }),
+    "mtn-2gb": Object.freeze({
+        network: 1,
+        plan: 573,
+        amountKobo: 80000,
+        name: "MTN 2 GB",
+        size: "2 GB",
+    }),
+    "mtn-3gb": Object.freeze({
+        network: 1,
+        plan: 572,
+        amountKobo: 110000,
+        name: "MTN 3 GB",
+        size: "3 GB",
+    }),
+    "mtn-10gb": Object.freeze({
+        network: 1,
+        plan: 652,
+        amountKobo: 300000,
+        name: "MTN 10 GB",
+        size: "10 GB",
+    }),
 });
 
 const ALRAHUZ_DATA_URL = "https://alrahuzdata.com.ng/api/data/";
@@ -18,6 +42,14 @@ export class DataSalesError extends Error {
         this.status = status;
         this.expose = status < 500;
     }
+}
+
+export function listMtnDataPlans() {
+    return Object.entries(DATA_OFFERS).map(([offerId, offer]) => ({
+        offerId,
+        size: offer.size,
+        amountKobo: String(offer.amountKobo),
+    }));
 }
 
 function providerPhoneNumber(e164) {
@@ -84,17 +116,18 @@ function providerOutcome(response, payload) {
     return "pending";
 }
 
-function orderMessage(status) {
-    if (status === "successful") return "Your MTN 1 GB data purchase was confirmed.";
-    if (status === "submitted") return "The provider accepted the order. If the bundle does not arrive, check the provider portal before retrying.";
+function orderMessage(status, product) {
+    if (status === "successful") return `Your ${product} data purchase was confirmed.`;
+    if (status === "submitted") return `The provider accepted your ${product} order. If the bundle does not arrive, check the provider portal before retrying.`;
     if (status === "failed") return "The provider rejected the order. Your wallet has been refunded.";
     return "The provider response is not yet confirmed. Your balance is held to prevent a duplicate purchase.";
 }
 
 function serializeOrder(row) {
+    const offer = Object.values(DATA_OFFERS).find((candidate) => candidate.plan === Number(row.plan_id));
     return {
         id: row.id,
-        product: MTN_ONE_GB_OFFER.name,
+        product: offer?.name || "MTN data bundle",
         recipient: row.recipient_phone_e164,
         amountKobo: String(row.amount_kobo),
         status: row.status,
@@ -106,7 +139,7 @@ function serializeOrder(row) {
     };
 }
 
-async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, portedNumber }) {
+async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, portedNumber, offer }) {
     const connection = await pool.getConnection();
     let transactionOpen = false;
 
@@ -122,7 +155,7 @@ async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, ported
         if (!wallet) throw new DataSalesError(404, "A SARKI wallet could not be found for this account.");
 
         const [existingRows] = await connection.execute(
-            `SELECT id, idempotency_key, recipient_phone_e164, amount_kobo, status, provider_reference, created_at
+            `SELECT id, idempotency_key, recipient_phone_e164, plan_id, amount_kobo, status, provider_reference, created_at
              FROM sarki_data_orders
              WHERE user_id = ? AND idempotency_key = ?
              LIMIT 1
@@ -156,13 +189,14 @@ async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, ported
         }
 
         const balance = BigInt(wallet.balance_kobo);
-        if (balance < BigInt(MTN_ONE_GB_OFFER.amountKobo)) {
-            throw new DataSalesError(409, "Your wallet balance is too low for the ₦450 MTN 1 GB bundle.");
+        if (balance < BigInt(offer.amountKobo)) {
+            const price = (offer.amountKobo / 100).toLocaleString("en-NG");
+            throw new DataSalesError(409, `Your wallet balance is too low for the ${offer.name} bundle (₦${price}).`);
         }
 
         await connection.execute(
             "UPDATE sarki_wallets SET balance_kobo = balance_kobo - ? WHERE user_id = ?",
-            [MTN_ONE_GB_OFFER.amountKobo, userId],
+            [offer.amountKobo, userId],
         );
 
         const orderId = randomUUID();
@@ -175,9 +209,9 @@ async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, ported
                 userId,
                 idempotencyKey,
                 phone,
-                MTN_ONE_GB_OFFER.network,
-                MTN_ONE_GB_OFFER.plan,
-                MTN_ONE_GB_OFFER.amountKobo,
+                offer.network,
+                offer.plan,
+                offer.amountKobo,
                 portedNumber,
             ],
         );
@@ -189,12 +223,13 @@ async function createOrderAndDebit(pool, { userId, phone, idempotencyKey, ported
                 id: orderId,
                 idempotency_key: idempotencyKey,
                 recipient_phone_e164: phone,
-                amount_kobo: String(MTN_ONE_GB_OFFER.amountKobo),
+                plan_id: offer.plan,
+                amount_kobo: String(offer.amountKobo),
                 status: "processing",
                 provider_reference: null,
                 created_at: new Date(),
             },
-            balanceKobo: String(balance - BigInt(MTN_ONE_GB_OFFER.amountKobo)),
+            balanceKobo: String(balance - BigInt(offer.amountKobo)),
             replayed: false,
         };
     } catch (error) {
@@ -256,7 +291,7 @@ async function updateOrderStatus(pool, orderId, status, reference = null) {
 
 async function loadOrder(pool, userId, orderId) {
     const [rows] = await pool.execute(
-        `SELECT id, idempotency_key, recipient_phone_e164, amount_kobo, status, provider_reference, created_at
+        `SELECT id, idempotency_key, recipient_phone_e164, plan_id, amount_kobo, status, provider_reference, created_at
          FROM sarki_data_orders
          WHERE user_id = ? AND id = ?
          LIMIT 1`,
@@ -265,12 +300,18 @@ async function loadOrder(pool, userId, orderId) {
     return rows[0] || null;
 }
 
-export async function purchaseMtnOneGb(pool, {
+export async function purchaseMtnBundle(pool, {
     userId,
     phone,
     idempotencyKey,
     portedNumber,
+    offerId,
 }) {
+    const offer = typeof offerId === "string" ? DATA_OFFERS[offerId] : null;
+    if (!offer) {
+        throw new DataSalesError(400, "Choose a valid MTN data plan.");
+    }
+
     const token = process.env.ALRAHUZ_API_TOKEN?.trim();
     if (!token) {
         throw new DataSalesError(503, "Data purchases are not configured yet.");
@@ -288,12 +329,14 @@ export async function purchaseMtnOneGb(pool, {
         phone,
         idempotencyKey,
         portedNumber,
+        offer,
     });
     if (created.replayed) {
+        const order = serializeOrder(created.order);
         return {
-            order: serializeOrder(created.order),
+            order,
             balanceKobo: created.balanceKobo,
-            message: orderMessage(created.order.status),
+            message: orderMessage(created.order.status, order.product),
             replayed: true,
         };
     }
@@ -311,9 +354,9 @@ export async function purchaseMtnOneGb(pool, {
                 Accept: "application/json",
             },
             body: JSON.stringify({
-                network: MTN_ONE_GB_OFFER.network,
+                network: offer.network,
                 mobile_number: mobileNumber,
-                plan: MTN_ONE_GB_OFFER.plan,
+                plan: offer.plan,
                 Ported_number: portedNumber,
             }),
         });
@@ -330,18 +373,19 @@ export async function purchaseMtnOneGb(pool, {
     const balanceKobo = await updateOrderStatus(pool, created.order.id, outcome, reference);
     const order = await loadOrder(pool, userId, created.order.id);
     if (!order) throw new Error("Data order could not be reloaded after provider response.");
+    const serializedOrder = serializeOrder(order);
 
     return {
-        order: serializeOrder(order),
+        order: serializedOrder,
         balanceKobo,
-        message: orderMessage(order.status),
+        message: orderMessage(order.status, serializedOrder.product),
         replayed: false,
     };
 }
 
 export async function listRecentDataOrders(pool, userId) {
     const [rows] = await pool.execute(
-        `SELECT id, idempotency_key, recipient_phone_e164, amount_kobo, status, provider_reference, created_at
+        `SELECT id, idempotency_key, recipient_phone_e164, plan_id, amount_kobo, status, provider_reference, created_at
          FROM sarki_data_orders
          WHERE user_id = ?
          ORDER BY created_at DESC

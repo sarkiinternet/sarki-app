@@ -7,8 +7,9 @@ import { promisify } from "node:util";
 import { closePool, getPool, pool } from "./database.mjs";
 import {
     DataSalesError,
+    listMtnDataPlans,
     listRecentDataOrders,
-    purchaseMtnOneGb,
+    purchaseMtnBundle,
 } from "./data-sales.mjs";
 const scrypt = promisify(scryptCallback);
 const PORT = Number(process.env.PORT || 3000);
@@ -343,11 +344,12 @@ async function purchaseData(request, response) {
     }
 
     try {
-        const result = await purchaseMtnOneGb(getPool(), {
+        const result = await purchaseMtnBundle(getPool(), {
             userId: account.id,
             phone,
             idempotencyKey: body.idempotencyKey,
             portedNumber: body.portedNumber,
+            offerId: body.offerId,
         });
         return sendJson(response, 200, result);
     } catch (error) {
@@ -359,6 +361,10 @@ async function purchaseData(request, response) {
 }
 
 async function handleApi(request, response, pathname) {
+    if (pathname === "/api/data/plans" && request.method === "GET") {
+        return sendJson(response, 200, { plans: listMtnDataPlans() });
+    }
+
     if (pathname === "/api/health" && request.method === "GET") {
         await getPool().execute("SELECT 1");
         return sendJson(response, 200, { status: "ok" });
