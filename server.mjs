@@ -8,7 +8,7 @@ import { closePool, getPool, pool } from "./database.mjs";
 import {
     DataSalesError,
     listRecentDataOrders,
-    purchaseData as submitDataPurchase,
+    purchaseMtnOneGb,
 } from "./data-sales.mjs";
 const scrypt = promisify(scryptCallback);
 const PORT = Number(process.env.PORT || 3000);
@@ -343,12 +343,11 @@ async function purchaseData(request, response) {
     }
 
     try {
-        const result = await submitDataPurchase(getPool(), {
+        const result = await purchaseMtnOneGb(getPool(), {
             userId: account.id,
             phone,
             idempotencyKey: body.idempotencyKey,
             portedNumber: body.portedNumber,
-            offerId: body.offerId,
         });
         return sendJson(response, 200, result);
     } catch (error) {

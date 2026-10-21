@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS sarki_data_orders (
     ported_number TINYINT(1) NOT NULL,
     status ENUM('processing', 'pending', 'submitted', 'successful', 'failed') NOT NULL DEFAULT 'processing',
     provider_reference VARCHAR(128) CHARACTER SET ascii COLLATE ascii_bin NULL,
-    provider_message VARCHAR(255) NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),

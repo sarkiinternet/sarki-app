@@ -29,7 +29,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd sarki-data-house && PORT=8081 pnpm start"
+args = "PORT=8081 pnpm start"
 waitForPort = 8081
 
 [agent]
