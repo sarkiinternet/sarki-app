@@ -421,13 +421,6 @@ input::placeholder, select::placeholder {
             font-size: 12px;
         }
 
-        .landing-plans-status {
-            margin: 12px 0 0;
-            color: #8a5d2b;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
         .bundle-showcase {
             position: relative;
             min-height: 400px;
@@ -546,55 +539,6 @@ input::placeholder, select::placeholder {
         .bundle-card-bottom strong {
             color: #fff;
             font-size: 13px;
-        }
-
-        .other-bundles {
-            width: 128px;
-            display: flex;
-            flex: 0 0 128px;
-            flex-direction: column;
-            justify-content: center;
-            gap: 8px;
-            margin: 0 0 0 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .other-bundles span {
-            padding: 9px 13px;
-            border: 1px solid rgba(23, 33, 28, 0.1);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.7);
-            color: #566158;
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .other-bundles .bundle-price-chip {
-            min-height: 56px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 3px;
-            padding: 9px 12px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.88);
-            box-shadow: 0 8px 20px rgba(24, 59, 43, 0.06);
-            text-align: left;
-        }
-
-        .bundle-price-chip strong {
-            color: var(--ink);
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .bundle-price-chip small {
-            color: #5d913e;
-            font-size: 14px;
-            font-weight: 850;
         }
 
         .trust-strip {
@@ -727,20 +671,6 @@ input::placeholder, select::placeholder {
                 flex: 0 0 auto;
                 width: min(100%, 320px);
                 min-height: 280px;
-            }
-
-            .other-bundles {
-                width: min(100%, 320px);
-                display: grid;
-                flex: 0 0 auto;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 8px;
-                margin: 0;
-            }
-
-            .other-bundles .bundle-price-chip {
-                align-items: center;
-                text-align: center;
             }
 
             .bundle-amount {
@@ -1509,10 +1439,9 @@ input::placeholder, select::placeholder {
                     <span class="hero-note">Quick, easy bundle purchasing</span>
                 </div>
                 <p id="auth-connection-status" class="auth-error" role="status" aria-live="polite" hidden></p>
-                <p id="landing-plans-status" class="landing-plans-status" role="status" aria-live="polite" hidden></p>
             </section>
 
-            <section class="bundle-showcase" aria-label="Available MTN data bundles">
+            <section class="bundle-showcase" aria-label="Featured MTN data bundle">
                 <div class="bundle-orbit" aria-hidden="true"></div>
                 <article class="bundle-card">
                     <div class="bundle-card-top">
@@ -1526,9 +1455,6 @@ input::placeholder, select::placeholder {
                         <strong>SARKI</strong>
                     </div>
                 </article>
-                <div id="landing-other-bundles" class="other-bundles" aria-label="Other available MTN data bundles">
-                    <span class="bundle-price-chip"><strong>Available bundles</strong><small>Loading…</small></span>
-                </div>
             </section>
         </div>
 
@@ -1735,8 +1661,6 @@ input::placeholder, select::placeholder {
         const heroLoginButton = document.querySelector('[data-open-login]');
         const featuredBundleSize = document.getElementById('featured-bundle-size');
         const featuredBundlePrice = document.getElementById('featured-bundle-price');
-        const landingOtherBundles = document.getElementById('landing-other-bundles');
-        const landingPlansStatus = document.getElementById('landing-plans-status');
         const plansList = document.getElementById('plans-list');
         const plansError = document.getElementById('plans-error');
         const plansRetryButton = document.getElementById('plans-retry-button');
@@ -1983,26 +1907,15 @@ input::placeholder, select::placeholder {
             });
         }
 
-        function setLandingPlansError(message) {
+        function setLandingPlansError() {
             featuredBundleSize.textContent = '—';
             featuredBundlePrice.textContent = '—';
-            landingOtherBundles.replaceChildren();
-            const chip = document.createElement('span');
-            chip.className = 'bundle-price-chip';
-            const title = document.createElement('strong');
-            title.textContent = 'Bundles unavailable';
-            const note = document.createElement('small');
-            note.textContent = 'Try again shortly';
-            chip.append(title, note);
-            landingOtherBundles.append(chip);
-            landingPlansStatus.textContent = message;
-            landingPlansStatus.hidden = false;
         }
 
         function renderLandingBundles() {
-            const [featuredPlan, ...otherPlans] = dataPlans;
+            const featuredPlan = dataPlans[0];
             if (!featuredPlan) {
-                setLandingPlansError('No data bundles are available right now.');
+                setLandingPlansError();
                 return;
             }
 
@@ -2019,30 +1932,6 @@ input::placeholder, select::placeholder {
                 featuredBundleSize.textContent = featuredPlan.size;
             }
             featuredBundlePrice.textContent = formatPlanPrice(featuredPlan.amountKobo);
-
-            landingOtherBundles.replaceChildren();
-            otherPlans.forEach((plan) => {
-                const chip = document.createElement('span');
-                chip.className = 'bundle-price-chip';
-                const name = document.createElement('strong');
-                name.textContent = `MTN ${plan.size}`;
-                const price = document.createElement('small');
-                price.textContent = formatPlanPrice(plan.amountKobo);
-                chip.append(name, price);
-                landingOtherBundles.append(chip);
-            });
-            if (!otherPlans.length) {
-                const chip = document.createElement('span');
-                chip.className = 'bundle-price-chip';
-                const name = document.createElement('strong');
-                name.textContent = 'All bundles shown';
-                const note = document.createElement('small');
-                note.textContent = 'Available now';
-                chip.append(name, note);
-                landingOtherBundles.append(chip);
-            }
-            landingPlansStatus.textContent = '';
-            landingPlansStatus.hidden = true;
         }
 
         function loadDataPlans() {
@@ -2082,7 +1971,7 @@ input::placeholder, select::placeholder {
                     plansError.textContent = 'Please check your connection and try again.';
                     plansError.hidden = false;
                     plansRetryButton.hidden = false;
-                    setLandingPlansError('Available data bundles could not be loaded. Please try again shortly.');
+                    setLandingPlansError();
                     return null;
                 } finally {
                     dataPlansLoadPromise = null;
