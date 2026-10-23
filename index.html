@@ -641,6 +641,51 @@ input::placeholder, select::placeholder {
             font-size: 11px;
         }
 
+        .footer-contact {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 18px;
+            margin: 10px 0 14px;
+            color: #657169;
+            font-size: 12px;
+        }
+
+        .footer-contact a {
+            color: #315f3e;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover,
+        .footer-contact a:focus-visible {
+            text-decoration: underline;
+        }
+
+        .back-exit-notice {
+            position: fixed;
+            z-index: 20;
+            right: 18px;
+            bottom: max(18px, env(safe-area-inset-bottom));
+            left: 18px;
+            width: fit-content;
+            max-width: calc(100% - 36px);
+            margin: 0 auto;
+            padding: 13px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: #183b2b;
+            box-shadow: 0 10px 28px rgba(24, 59, 43, 0.24);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .back-exit-notice[hidden] {
+            display: none;
+        }
+
         .container#purchase-page {
             width: min(100% - 32px, 460px);
             min-height: 100vh;
@@ -1694,7 +1739,12 @@ input::placeholder, select::placeholder {
                     <span>Stay connected</span>
                 </div>
             </div>
-            <span>© SARKI</span>
+            <div class="footer-contact" aria-label="Contact SARKI">
+                <span>Need help?</span>
+                <a href="mailto:support@sarki.com.ng">support@sarki.com.ng</a>
+                <a href="https://www.instagram.com/sarkidata/" target="_blank" rel="noopener noreferrer">Instagram @sarkidata</a>
+            </div>
+            <span>© SARKI INTERNET SERVICES</span>
         </div>
     </main>
 
@@ -1903,6 +1953,10 @@ input::placeholder, select::placeholder {
         </div>
     </main>
 
+    <div id="back-exit-notice" class="back-exit-notice" role="status" aria-live="polite" hidden>
+        Press back again to exit
+    </div>
+
     <script>
         const landingPage = document.getElementById('landing-page');
         const loginPage = document.getElementById('login-page');
@@ -1936,6 +1990,8 @@ input::placeholder, select::placeholder {
         const SESSION_IDLE_TIMEOUT_MS = 5 * 60 * 1000;
         const SESSION_REFRESH_INTERVAL_MS = 10 * 1000;
         const LOGIN_REQUIRED_STORAGE_KEY = 'sarki:login-required';
+        const HAS_AUTHENTICATED_STORAGE_KEY = 'sarki:has-authenticated';
+        const BACK_EXIT_CONFIRMATION_MS = 2200;
         let currentUser = null;
         let dataPlans = [];
         let dataPlansLoaded = false;
@@ -1948,8 +2004,46 @@ input::placeholder, select::placeholder {
         let purchaseInProgress = false;
         let checkingOrderHistory = false;
         let hasUnresolvedOrder = false;
+        let navigationInitialized = false;
+        let navigationIndex = 0;
+        let backExitArmedUntil = 0;
+        let backExitNoticeTimer = null;
+        let exitingAfterConfirmedBack = false;
 
-        function displayPage(page, focusTarget) {
+        function displayPage(page, focusTarget, { historyMode = 'push' } = {}) {
+            if (historyMode === 'push') {
+                const currentState = window.history.state;
+                if (!navigationInitialized) {
+                    navigationIndex = currentState?.sarkiApp === true
+                        && Number.isInteger(currentState.sarkiIndex)
+                        ? currentState.sarkiIndex
+                        : 0;
+                    window.history.replaceState({
+                        sarkiApp: true,
+                        sarkiScreen: page.id,
+                        sarkiIndex: navigationIndex
+                    }, '', window.location.href);
+                    navigationInitialized = true;
+                } else {
+                    const currentIndex = currentState?.sarkiApp === true
+                        && Number.isInteger(currentState.sarkiIndex)
+                        ? currentState.sarkiIndex
+                        : navigationIndex;
+                    navigationIndex = currentIndex + 1;
+                    window.history.pushState({
+                        sarkiApp: true,
+                        sarkiScreen: page.id,
+                        sarkiIndex: navigationIndex
+                    }, '', window.location.href);
+                }
+            } else if (historyMode === 'pop') {
+                const currentState = window.history.state;
+                if (currentState?.sarkiApp === true && Number.isInteger(currentState.sarkiIndex)) {
+                    navigationIndex = currentState.sarkiIndex;
+                }
+                navigationInitialized = true;
+            }
+
             pages.forEach((screen) => {
                 screen.hidden = screen !== page;
             });
@@ -1968,8 +2062,26 @@ input::placeholder, select::placeholder {
         function requireLoginInBrowser() {
             try {
                 window.localStorage.setItem(LOGIN_REQUIRED_STORAGE_KEY, '1');
+                window.localStorage.setItem(HAS_AUTHENTICATED_STORAGE_KEY, '1');
             } catch {
                 // Keep the current page protected even when browser storage is unavailable.
+            }
+        }
+
+        function markAuthenticatedInBrowser() {
+            try {
+                window.localStorage.setItem(HAS_AUTHENTICATED_STORAGE_KEY, '1');
+            } catch {
+                // The authenticated session still works if browser storage is unavailable.
+            }
+        }
+
+        function hasAuthenticatedBefore() {
+            try {
+                return window.localStorage.getItem(HAS_AUTHENTICATED_STORAGE_KEY) === '1'
+                    || window.localStorage.getItem(LOGIN_REQUIRED_STORAGE_KEY) === '1';
+            } catch {
+                return false;
             }
         }
 
@@ -2015,41 +2127,41 @@ input::placeholder, select::placeholder {
                 : formatBalance(String(kobo));
         }
 
-        function showLoginPage() {
-            if (currentUser) return showWalletPage();
+        function showLoginPage({ historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ historyMode });
             document.getElementById('login-error').textContent = '';
             const requireLogin = isLoginRequiredInBrowser();
             document.querySelectorAll('[data-auth-home]').forEach((button) => {
                 button.hidden = requireLogin;
             });
-            displayPage(loginPage, document.getElementById('login-phone'));
+            displayPage(loginPage, document.getElementById('login-phone'), { historyMode });
         }
 
-        function showSignupPage() {
-            if (currentUser) return showWalletPage();
+        function showSignupPage({ historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ historyMode });
             document.getElementById('signup-error').textContent = '';
-            displayPage(signupPage, document.getElementById('signup-phone'));
+            displayPage(signupPage, document.getElementById('signup-phone'), { historyMode });
         }
 
-        function showWalletPage({ focus = true } = {}) {
-            if (!currentUser) return showLoginPage();
+        function showWalletPage({ focus = true, historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
             setDepositCardShowing(false);
             document.getElementById('balance-amount').textContent = formatBalance(currentUser.balanceKobo);
-            displayPage(walletPage, focus ? document.getElementById('data-button') : null);
+            displayPage(walletPage, focus ? document.getElementById('data-button') : null, { historyMode });
         }
 
-        function showPlansPage() {
-            if (!currentUser) return showLoginPage();
-            displayPage(plansPage, document.getElementById('plans-title'));
+        function showPlansPage({ historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
+            displayPage(plansPage, document.getElementById('plans-title'), { historyMode });
             if (dataPlansLoaded) renderDataPlans();
             else loadDataPlans();
         }
 
-        function showPurchasePage(offerId) {
-            if (!currentUser) return showLoginPage();
+        function showPurchasePage(offerId, { historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
             if (offerId) selectedOfferId = offerId;
             const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
-            if (!selectedPlan) return showPlansPage();
+            if (!selectedPlan) return showPlansPage({ historyMode });
 
             document.getElementById('purchase-balance').textContent = formatBalance(currentUser.balanceKobo);
             selectedBundleSize.textContent = selectedPlan.size;
@@ -2059,15 +2171,101 @@ input::placeholder, select::placeholder {
                 `Selected MTN ${selectedPlan.size} bundle for ${formatPlanPrice(selectedPlan.amountKobo)}`
             );
             updatePurchaseButton();
-            displayPage(purchasePage, document.getElementById('recipient-phone'));
+            displayPage(purchasePage, document.getElementById('recipient-phone'), { historyMode });
             loadRecentOrders();
         }
 
-        function showLandingPage({ focus = true } = {}) {
-            if (currentUser) return showWalletPage({ focus: false });
-            if (isLoginRequiredInBrowser()) return showLoginPage();
+        function showLandingPage({ focus = true, historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ focus: false, historyMode });
+            if (isLoginRequiredInBrowser()) return showLoginPage({ historyMode });
             updateLandingActions();
-            displayPage(landingPage, focus ? landingLoginButton : null);
+            displayPage(landingPage, focus ? landingLoginButton : null, { historyMode });
+        }
+
+        function showBackExitNotice() {
+            const notice = document.getElementById('back-exit-notice');
+            notice.hidden = false;
+            window.clearTimeout(backExitNoticeTimer);
+            backExitNoticeTimer = window.setTimeout(() => {
+                notice.hidden = true;
+            }, BACK_EXIT_CONFIRMATION_MS);
+        }
+
+        function handleAppBackNavigation(event) {
+            if (exitingAfterConfirmedBack) return;
+
+            const activePage = pages.find((page) => !page.hidden);
+            const isBackwardNavigation = event.state?.sarkiApp !== true
+                || !Number.isInteger(event.state.sarkiIndex)
+                || event.state.sarkiIndex < navigationIndex;
+            if (activePage === loginPage && hasAuthenticatedBefore() && isBackwardNavigation) {
+                const now = Date.now();
+                if (now < backExitArmedUntil) {
+                    backExitArmedUntil = 0;
+                    exitingAfterConfirmedBack = true;
+                    window.clearTimeout(backExitNoticeTimer);
+                    document.getElementById('back-exit-notice').hidden = true;
+                    const priorIndex = event.state?.sarkiApp === true
+                        && Number.isInteger(event.state.sarkiIndex)
+                        ? event.state.sarkiIndex
+                        : null;
+                    if (priorIndex !== null) {
+                        window.history.go(-(priorIndex + 1));
+                    }
+                    return;
+                }
+
+                backExitArmedUntil = now + BACK_EXIT_CONFIRMATION_MS;
+                showBackExitNotice();
+                const priorIndex = event.state?.sarkiApp === true
+                    && Number.isInteger(event.state.sarkiIndex)
+                    ? event.state.sarkiIndex
+                    : Math.max(0, navigationIndex - 1);
+                navigationIndex = priorIndex + 1;
+                window.history.pushState({
+                    sarkiApp: true,
+                    sarkiScreen: loginPage.id,
+                    sarkiIndex: navigationIndex
+                }, '', window.location.href);
+                return;
+            }
+
+            if (event.state?.sarkiApp !== true) return;
+            const requestedPage = pages.find((page) => page.id === event.state.sarkiScreen);
+            if (!requestedPage) return;
+
+            if (currentUser) {
+                if (requestedPage === landingPage || requestedPage === loginPage || requestedPage === signupPage) {
+                    return showWalletPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === walletPage) {
+                    return showWalletPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === plansPage) {
+                    return showPlansPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === purchasePage) {
+                    return showPurchasePage(undefined, { historyMode: 'pop' });
+                }
+            } else {
+                if (requestedPage === walletPage || requestedPage === plansPage || requestedPage === purchasePage) {
+                    return isLoginRequiredInBrowser()
+                        ? showLoginPage({ historyMode: 'pop' })
+                        : showLandingPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === landingPage && isLoginRequiredInBrowser()) {
+                    return showLoginPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === loginPage) {
+                    return showLoginPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === signupPage) {
+                    return showSignupPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === landingPage) {
+                    return showLandingPage({ focus: false, historyMode: 'pop' });
+                }
+            }
         }
 
         async function requestJson(path, { method = 'GET', body } = {}) {
@@ -2450,6 +2648,7 @@ input::placeholder, select::placeholder {
                 const credentials = Object.fromEntries(new FormData(form).entries());
                 const result = await requestJson(endpoint, { method: 'POST', body: credentials });
                 currentUser = result.user;
+                markAuthenticatedInBrowser();
                 clearLoginRequiredInBrowser();
                 beginSessionTracking();
                 authConnectionStatus.hidden = true;
@@ -2474,6 +2673,7 @@ input::placeholder, select::placeholder {
                 authConnectionStatus.textContent = '';
                 updateLandingActions();
                 if (currentUser) {
+                    markAuthenticatedInBrowser();
                     clearLoginRequiredInBrowser();
                     beginSessionTracking();
                     showWalletPage({ focus: false });
@@ -2529,6 +2729,7 @@ input::placeholder, select::placeholder {
             if (document.visibilityState === 'visible') checkSessionOnReturn();
         });
         window.addEventListener('focus', checkSessionOnReturn);
+        window.addEventListener('popstate', handleAppBackNavigation);
 
         loadDataPlans();
         restoreSession();
