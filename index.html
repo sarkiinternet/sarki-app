@@ -306,15 +306,27 @@ input::placeholder, select::placeholder {
         }
 
         .brand-mark {
-            width: 30px;
+            position: relative;
+            width: 38px;
             height: 30px;
             display: grid;
+            flex: 0 0 38px;
             place-items: center;
+            overflow: hidden;
             border-radius: 10px;
             background: var(--green);
-            color: var(--green-dark);
-            font-size: 16px;
-            letter-spacing: 0;
+        }
+
+        .brand-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 64px;
+            height: 64px;
+            max-width: none;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: multiply;
         }
 
         .login-button,
@@ -1671,7 +1683,7 @@ input::placeholder, select::placeholder {
     <main id="landing-page" class="landing-page">
         <header class="site-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
             <button id="login-button" class="login-button" type="button">Log in</button>
@@ -1743,6 +1755,7 @@ input::placeholder, select::placeholder {
                 <span>Need help?</span>
                 <a href="mailto:support@sarki.com.ng">support@sarki.com.ng</a>
                 <a href="https://www.instagram.com/sarkidata/" target="_blank" rel="noopener noreferrer">Instagram @sarkidata</a>
+                <a href="https://wa.me/+2349123040739">09123040739</a>
             </div>
             <span>© SARKI INTERNET SERVICES</span>
         </div>
@@ -1751,7 +1764,7 @@ input::placeholder, select::placeholder {
     <main id="login-page" class="app-screen" hidden>
         <header class="app-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
             <button class="screen-back-button" type="button" data-auth-home>Home</button>
@@ -1782,7 +1795,7 @@ input::placeholder, select::placeholder {
     <main id="signup-page" class="app-screen" hidden>
         <header class="app-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
             <button class="screen-back-button" type="button" data-auth-home>Home</button>
@@ -1814,7 +1827,7 @@ input::placeholder, select::placeholder {
     <main id="wallet-page" class="app-screen" hidden>
         <header class="app-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
         </header>
@@ -1876,7 +1889,7 @@ input::placeholder, select::placeholder {
     <main id="plans-page" class="app-screen" hidden>
         <header class="app-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
             <button id="plans-wallet-button" class="screen-back-button" type="button">Wallet</button>
@@ -1911,7 +1924,7 @@ input::placeholder, select::placeholder {
     <main id="purchase-page" class="app-screen" hidden>
         <header class="app-header">
             <div class="brand" aria-label="SARKI">
-                <span class="brand-mark" aria-hidden="true">S</span>
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
                 <span>SARKI</span>
             </div>
             <button id="purchase-back-button" class="screen-back-button" type="button">Plans</button>

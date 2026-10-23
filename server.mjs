@@ -27,6 +27,7 @@ const RATE_LIMIT_DATA_PURCHASES_PER_ACCOUNT = 8;
 const MAX_REQUEST_BYTES = 16 * 1024;
 const appDirectory = dirname(fileURLToPath(import.meta.url));
 const landingPagePath = resolve(appDirectory, "index.html");
+const sarkiLogoPath = resolve(appDirectory, "sarki-logo.jpg");
 const authRateLimits = new Map();
 
 if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
@@ -433,6 +434,17 @@ const server = createServer(async (request, response) => {
 
         if (request.method !== "GET" && request.method !== "HEAD") {
             return sendJson(response, 405, { error: "Method not allowed." }, { Allow: "GET, HEAD" });
+        }
+
+        if (pathname === "/sarki-logo.jpg") {
+            const logo = await readFile(sarkiLogoPath);
+            response.writeHead(200, {
+                "Cache-Control": "public, max-age=3600",
+                "Content-Length": logo.length,
+                "Content-Type": "image/jpeg",
+            });
+            response.end(request.method === "HEAD" ? undefined : logo);
+            return;
         }
 
         const html = await readFile(landingPagePath);
