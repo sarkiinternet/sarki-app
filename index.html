@@ -425,8 +425,10 @@ input::placeholder, select::placeholder {
             position: relative;
             min-height: 400px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 17px;
         }
 
         .bundle-orbit {
@@ -539,6 +541,69 @@ input::placeholder, select::placeholder {
         .bundle-card-bottom strong {
             color: #fff;
             font-size: 13px;
+        }
+
+        .app-store-badges {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: min(100%, 340px);
+        }
+
+        .store-badge {
+            display: flex;
+            flex: 1 1 0;
+            align-items: center;
+            gap: 10px;
+            min-height: 58px;
+            padding: 9px 12px;
+            border: 1px solid rgba(23, 33, 28, 0.09);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 20px rgba(24, 59, 43, 0.06);
+            color: var(--ink);
+            text-align: left;
+        }
+
+        .store-badge-icon {
+            width: 25px;
+            height: 25px;
+            display: grid;
+            flex: 0 0 25px;
+            place-items: center;
+            color: #315f3e;
+        }
+
+        .store-badge-icon svg {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+
+        .store-badge-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .store-badge-copy small {
+            color: #758078;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            line-height: 1;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .store-badge-copy strong {
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.1;
+            white-space: nowrap;
         }
 
         .trust-strip {
@@ -885,15 +950,37 @@ input::placeholder, select::placeholder {
 
         .wallet-card {
             position: relative;
+            width: 100%;
+            perspective: 1400px;
+        }
+
+        .wallet-card-inner {
+            position: relative;
+            min-height: 286px;
+            transform-style: preserve-3d;
+            transition: transform 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .wallet-card.is-flipped .wallet-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .wallet-card-face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
             padding: 30px;
             border-radius: 26px;
             background: linear-gradient(135deg, #183b2b 0%, #28553b 100%);
             color: #fff;
             box-shadow: 0 24px 56px rgba(24, 59, 43, 0.18);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
-        .wallet-card::after {
+        .wallet-card-face::after {
             position: absolute;
             content: "";
             width: 240px;
@@ -904,6 +991,96 @@ input::placeholder, select::placeholder {
             border-radius: 50%;
             box-shadow: 0 0 0 22px rgba(182, 243, 106, 0.05), 0 0 0 48px rgba(182, 243, 106, 0.04);
             pointer-events: none;
+            z-index: 0;
+        }
+
+        .wallet-card-face > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-card-front {
+            transform: rotateY(0deg);
+        }
+
+        .wallet-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(140deg, #163628 0%, #234c38 58%, #315e41 100%);
+        }
+
+        .wallet-demo-badge {
+            padding: 6px 9px;
+            border: 1px solid rgba(182, 243, 106, 0.35);
+            border-radius: 999px;
+            background: rgba(182, 243, 106, 0.12);
+            color: #d8f9b6;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .deposit-card-content {
+            margin-top: 24px;
+        }
+
+        .deposit-kicker {
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .deposit-title {
+            margin: 6px 0 5px;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 780;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .deposit-description {
+            margin: 0;
+            color: #d8e7dc;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .deposit-gateway {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 13px;
+            padding: 11px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .deposit-gateway span {
+            color: #c9d9ce;
+            font-size: 11px;
+        }
+
+        .deposit-gateway strong {
+            color: #fff;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        .deposit-note {
+            margin: 10px 0 0;
+            color: #d8e7dc;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .wallet-card-back .wallet-card-bottom {
+            margin-top: auto;
+            padding-top: 14px;
         }
 
         .wallet-card-top,
@@ -958,6 +1135,16 @@ input::placeholder, select::placeholder {
             letter-spacing: -0.06em;
             line-height: 1.05;
             overflow-wrap: anywhere;
+        }
+
+        #wallet-page #balance-amount {
+            margin: 0;
+            color: #fff;
+            font-family: inherit;
+            font-size: clamp(36px, 7vw, 54px);
+            font-weight: 780;
+            letter-spacing: -0.06em;
+            line-height: 1.05;
         }
 
         .wallet-card-bottom {
@@ -1368,6 +1555,12 @@ input::placeholder, select::placeholder {
             outline-offset: 3px;
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            .wallet-card-inner {
+                transition: none;
+            }
+        }
+
         @media (max-width: 520px) {
             .app-header {
                 width: calc(100% - 36px);
@@ -1380,11 +1573,15 @@ input::placeholder, select::placeholder {
                 padding-top: 38px;
             }
 
-            .wallet-card,
+            .wallet-card-face,
             .purchase-panel,
             .plans-panel,
             .auth-panel {
                 padding: 22px;
+            }
+
+            .wallet-card-inner {
+                min-height: 292px;
             }
 
             .plan-table th,
@@ -1408,11 +1605,17 @@ input::placeholder, select::placeholder {
 
             .wallet-actions {
                 align-items: stretch;
-                flex-direction: column;
+                flex-direction: row;
             }
 
-            .wallet-action {
-                width: 100%;
+            .wallet-actions .wallet-action {
+                width: auto;
+                flex: 1 1 0;
+                padding: 0 12px;
+            }
+
+            .app-store-badges {
+                width: min(100%, 320px);
             }
         }
 
@@ -1455,6 +1658,30 @@ input::placeholder, select::placeholder {
                         <strong>SARKI</strong>
                     </div>
                 </article>
+                <div class="app-store-badges" aria-label="SARKI mobile apps coming soon">
+                    <div class="store-badge" role="img" aria-label="Google Play, coming soon">
+                        <span class="store-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 3.5v17L18.5 12 5 3.5Z" fill="currentColor"></path>
+                            </svg>
+                        </span>
+                        <span class="store-badge-copy">
+                            <small>Coming soon</small>
+                            <strong>Google Play</strong>
+                        </span>
+                    </div>
+                    <div class="store-badge" role="img" aria-label="App Store, coming soon">
+                        <span class="store-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="m9 14.5 5.5-11M9.6 3.5l7.2 14M6.5 14.5h12M8.4 18.5h7.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                        </span>
+                        <span class="store-badge-copy">
+                            <small>Coming soon</small>
+                            <strong>App Store</strong>
+                        </span>
+                    </div>
+                </div>
             </section>
         </div>
 
@@ -1548,23 +1775,51 @@ input::placeholder, select::placeholder {
             <p class="screen-description">Check your balance or head straight to a data bundle.</p>
             <p id="wallet-error" class="auth-error" role="alert" aria-live="polite"></p>
 
-            <section class="wallet-card" aria-label="Wallet balance">
-                <div class="wallet-card-top">
-                    <span>SARKI WALLET</span>
-                    <span class="wallet-status">Available</span>
-                </div>
-                <p class="wallet-balance-label">Available balance</p>
-                <p id="balance-amount" class="wallet-balance">₦0.00</p>
-                <div class="wallet-card-bottom">
-                    <span>Ready for your next bundle</span>
-                    <span>SARKI</span>
+            <section id="wallet-card" class="wallet-card" aria-label="Your SARKI wallet">
+                <div class="wallet-card-inner">
+                    <div class="wallet-card-face wallet-card-front" aria-hidden="false">
+                        <div class="wallet-card-top">
+                            <span>SARKI WALLET</span>
+                            <span class="wallet-status">Available</span>
+                        </div>
+                        <p class="wallet-balance-label">Available balance</p>
+                        <p id="balance-amount" class="wallet-balance">₦0.00</p>
+                        <div class="wallet-card-bottom">
+                            <span>Ready for your next bundle</span>
+                            <span>SARKI</span>
+                        </div>
+                    </div>
+                    <div id="wallet-deposit-card" class="wallet-card-face wallet-card-back" aria-hidden="true" inert>
+                        <div class="wallet-card-top">
+                            <span>WALLET DEPOSIT</span>
+                            <span class="wallet-demo-badge">Demo only</span>
+                        </div>
+                        <div class="deposit-card-content">
+                            <span class="deposit-kicker">Payments are in development</span>
+                            <h2 class="deposit-title">Fund your wallet</h2>
+                            <p class="deposit-description">No payment will be taken in this demo.</p>
+                            <div class="deposit-gateway">
+                                <span>Planned gateway</span>
+                                <strong>Paystack or Monnify</strong>
+                            </div>
+                            <p class="deposit-note">Secure deposit details will appear here after a payment gateway is connected. Your balance will not change yet.</p>
+                        </div>
+                        <div class="wallet-card-bottom">
+                            <span>Deposits coming soon</span>
+                            <span>SARKI</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <div class="wallet-actions">
                 <button id="data-button" class="wallet-action wallet-action-data" type="button">DATA <span aria-hidden="true">→</span></button>
+                <button id="deposit-button" class="wallet-action wallet-action-secondary deposit-toggle" type="button" aria-controls="wallet-card" aria-expanded="false">
+                    <span id="deposit-button-label">DEPOSIT</span>
+                    <span id="deposit-button-icon" aria-hidden="true">↗</span>
+                </button>
             </div>
-            <p class="wallet-funding-notice">Wallet top-ups are not available yet. Your balance must cover the selected bundle.</p>
+            <p class="wallet-funding-notice">Deposits are a demo for now. Your balance must cover the selected bundle.</p>
         </div>
     </main>
 
@@ -1661,6 +1916,12 @@ input::placeholder, select::placeholder {
         const heroLoginButton = document.querySelector('[data-open-login]');
         const featuredBundleSize = document.getElementById('featured-bundle-size');
         const featuredBundlePrice = document.getElementById('featured-bundle-price');
+        const walletCard = document.getElementById('wallet-card');
+        const walletCardFront = walletCard.querySelector('.wallet-card-front');
+        const walletCardBack = walletCard.querySelector('.wallet-card-back');
+        const depositButton = document.getElementById('deposit-button');
+        const depositButtonLabel = document.getElementById('deposit-button-label');
+        const depositButtonIcon = document.getElementById('deposit-button-icon');
         const plansList = document.getElementById('plans-list');
         const plansError = document.getElementById('plans-error');
         const plansRetryButton = document.getElementById('plans-retry-button');
@@ -1674,6 +1935,7 @@ input::placeholder, select::placeholder {
         const orderHistoryList = document.getElementById('order-history-list');
         const SESSION_IDLE_TIMEOUT_MS = 5 * 60 * 1000;
         const SESSION_REFRESH_INTERVAL_MS = 10 * 1000;
+        const LOGIN_REQUIRED_STORAGE_KEY = 'sarki:login-required';
         let currentUser = null;
         let dataPlans = [];
         let dataPlansLoaded = false;
@@ -1693,6 +1955,41 @@ input::placeholder, select::placeholder {
             });
             if (focusTarget) focusTarget.focus();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function isLoginRequiredInBrowser() {
+            try {
+                return window.localStorage.getItem(LOGIN_REQUIRED_STORAGE_KEY) === '1';
+            } catch {
+                return false;
+            }
+        }
+
+        function requireLoginInBrowser() {
+            try {
+                window.localStorage.setItem(LOGIN_REQUIRED_STORAGE_KEY, '1');
+            } catch {
+                // Keep the current page protected even when browser storage is unavailable.
+            }
+        }
+
+        function clearLoginRequiredInBrowser() {
+            try {
+                window.localStorage.removeItem(LOGIN_REQUIRED_STORAGE_KEY);
+            } catch {
+                // Authentication still succeeds; storage is only used to remember the login screen.
+            }
+        }
+
+        function setDepositCardShowing(showDeposit) {
+            walletCard.classList.toggle('is-flipped', showDeposit);
+            walletCardFront.setAttribute('aria-hidden', String(showDeposit));
+            walletCardFront.inert = showDeposit;
+            walletCardBack.setAttribute('aria-hidden', String(!showDeposit));
+            walletCardBack.inert = !showDeposit;
+            depositButton.setAttribute('aria-expanded', String(showDeposit));
+            depositButtonLabel.textContent = showDeposit ? 'BALANCE' : 'DEPOSIT';
+            depositButtonIcon.textContent = showDeposit ? '←' : '↗';
         }
 
         function updateLandingActions() {
@@ -1721,6 +2018,10 @@ input::placeholder, select::placeholder {
         function showLoginPage() {
             if (currentUser) return showWalletPage();
             document.getElementById('login-error').textContent = '';
+            const requireLogin = isLoginRequiredInBrowser();
+            document.querySelectorAll('[data-auth-home]').forEach((button) => {
+                button.hidden = requireLogin;
+            });
             displayPage(loginPage, document.getElementById('login-phone'));
         }
 
@@ -1732,6 +2033,7 @@ input::placeholder, select::placeholder {
 
         function showWalletPage({ focus = true } = {}) {
             if (!currentUser) return showLoginPage();
+            setDepositCardShowing(false);
             document.getElementById('balance-amount').textContent = formatBalance(currentUser.balanceKobo);
             displayPage(walletPage, focus ? document.getElementById('data-button') : null);
         }
@@ -1763,6 +2065,7 @@ input::placeholder, select::placeholder {
 
         function showLandingPage({ focus = true } = {}) {
             if (currentUser) return showWalletPage({ focus: false });
+            if (isLoginRequiredInBrowser()) return showLoginPage();
             updateLandingActions();
             displayPage(landingPage, focus ? landingLoginButton : null);
         }
@@ -1813,6 +2116,7 @@ input::placeholder, select::placeholder {
 
         function expireSession() {
             if (!currentUser) return;
+            requireLoginInBrowser();
             currentUser = null;
             window.clearTimeout(sessionIdleTimer);
             sessionIdleTimer = null;
@@ -2146,6 +2450,7 @@ input::placeholder, select::placeholder {
                 const credentials = Object.fromEntries(new FormData(form).entries());
                 const result = await requestJson(endpoint, { method: 'POST', body: credentials });
                 currentUser = result.user;
+                clearLoginRequiredInBrowser();
                 beginSessionTracking();
                 authConnectionStatus.hidden = true;
                 authConnectionStatus.textContent = '';
@@ -2169,16 +2474,28 @@ input::placeholder, select::placeholder {
                 authConnectionStatus.textContent = '';
                 updateLandingActions();
                 if (currentUser) {
+                    clearLoginRequiredInBrowser();
                     beginSessionTracking();
                     showWalletPage({ focus: false });
                 } else if (result.sessionExpired) {
+                    requireLoginInBrowser();
                     showLoginPage();
                     document.getElementById('login-error').textContent =
                         'Your session ended. Please log in again.';
+                } else if (isLoginRequiredInBrowser()) {
+                    showLoginPage();
+                } else {
+                    showLandingPage({ focus: false });
                 }
             } catch {
-                authConnectionStatus.textContent = 'Account services are temporarily unavailable. Please try again shortly.';
-                authConnectionStatus.hidden = false;
+                if (isLoginRequiredInBrowser()) {
+                    showLoginPage();
+                    document.getElementById('login-error').textContent =
+                        'Account services are temporarily unavailable. Please try again shortly.';
+                } else {
+                    authConnectionStatus.textContent = 'Account services are temporarily unavailable. Please try again shortly.';
+                    authConnectionStatus.hidden = false;
+                }
             } finally {
                 document.body.classList.remove('session-checking');
             }
@@ -2199,6 +2516,9 @@ input::placeholder, select::placeholder {
             submitAuthForm(event, event.currentTarget, '/api/auth/signup', document.getElementById('signup-error'));
         });
         document.getElementById('data-button').addEventListener('click', showPlansPage);
+        depositButton.addEventListener('click', () => {
+            setDepositCardShowing(depositButton.getAttribute('aria-expanded') !== 'true');
+        });
         document.getElementById('plans-wallet-button').addEventListener('click', () => showWalletPage());
         document.getElementById('plans-retry-button').addEventListener('click', loadDataPlans);
         document.getElementById('purchase-back-button').addEventListener('click', showPlansPage);
