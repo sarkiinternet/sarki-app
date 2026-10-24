@@ -1002,67 +1002,39 @@ input::placeholder, select::placeholder {
             line-height: 1.5;
         }
 
-        .no-account-prompt {
+        .signup-handoff-message {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            padding: 16px 18px;
-            margin: 4px 0 8px;
+            padding: 14px 16px;
+            margin: 0 0 12px;
+            border: 1px solid rgba(121, 189, 74, 0.28);
             border-radius: 16px;
             background: linear-gradient(135deg, #f8faf5 0%, #f0f7ea 100%);
-            border: 1px solid rgba(121, 189, 74, 0.25);
-            text-align: center;
-            animation: prompt-in 400ms cubic-bezier(.2,.8,.2,1);
+            color: #385441;
+            font-size: 13px;
+            line-height: 1.55;
+            animation: prompt-in 420ms cubic-bezier(.2,.8,.2,1);
+        }
+
+        .signup-handoff-message[hidden] {
+            display: none;
+        }
+
+        .signup-handoff-message::before {
+            content: "";
+            flex: 0 0 10px;
+            width: 10px;
+            height: 10px;
+            margin-top: 5px;
+            border-radius: 50%;
+            background: #78b749;
+            box-shadow: 0 0 0 4px rgba(120, 183, 73, 0.13);
         }
 
         @keyframes prompt-in {
             from { opacity: 0; transform: translateY(8px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .no-account-icon {
-            font-size: 28px;
-            line-height: 1;
-        }
-
-        .no-account-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .no-account-text strong {
-            color: #183b2b;
-            font-size: 15px;
-            font-weight: 750;
-        }
-
-        .no-account-text span {
-            color: #5a6b5e;
-            font-size: 13px;
-        }
-
-        .no-account-signup {
-            margin-top: 4px;
-            min-height: 42px;
-            padding: 0 20px;
-            border: 0;
-            border-radius: 999px;
-            background: var(--green-dark);
-            color: #fff;
-            font: inherit;
-            font-size: 14px;
-            font-weight: 750;
-            cursor: pointer;
-            box-shadow: 0 6px 16px rgba(24, 59, 43, 0.15);
-            transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
-        }
-
-        .no-account-signup:hover {
-            background: #24553d;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(24, 59, 43, 0.22);
         }
 
         .auth-submit:disabled {
@@ -1410,6 +1382,138 @@ input::placeholder, select::placeholder {
             margin-bottom: 24px;
         }
 
+        .network-switcher {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 9px;
+            margin: -4px 0 20px;
+        }
+
+        .network-option {
+            display: flex;
+            min-width: 0;
+            min-height: 76px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 5px;
+            border: 1px solid #e2e9de;
+            border-radius: 14px;
+            background: #fbfcf9;
+            color: #536057;
+            font: inherit;
+            cursor: pointer;
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .network-option:hover {
+            transform: translateY(-1px);
+            border-color: #c8d9c0;
+            background: #f7faf3;
+        }
+
+        .network-option[aria-pressed="true"] {
+            border-color: #a8c890;
+            background: #f2f8ec;
+            color: #284a35;
+            box-shadow: 0 6px 16px rgba(24, 59, 43, 0.08);
+        }
+
+        .network-option:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        .carrier-logo {
+            display: inline-flex;
+            min-width: 48px;
+            height: 25px;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .carrier-logo--mtn {
+            min-width: 44px;
+            height: 25px;
+            padding: 0 5px;
+            border-radius: 50%;
+            background: #ffcc00;
+            color: #171717;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+        }
+
+        .carrier-logo--airtel {
+            position: relative;
+            color: #e3232e;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.075em;
+        }
+
+        .carrier-logo--airtel::before {
+            content: "";
+            width: 12px;
+            height: 9px;
+            margin: 0 -3px 7px 0;
+            border: 2px solid #e3232e;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            border-radius: 50%;
+            transform: rotate(-42deg);
+        }
+
+        .carrier-logo--glo {
+            color: #078c45;
+            font-family: Arial, sans-serif;
+            font-size: 19px;
+            font-weight: 900;
+            letter-spacing: -0.08em;
+        }
+
+        .carrier-logo--glo::after {
+            content: "•••";
+            align-self: flex-start;
+            margin: 1px 0 0 3px;
+            color: #e9b600;
+            font-size: 7px;
+            letter-spacing: -2px;
+        }
+
+        .carrier-logo--nine {
+            position: relative;
+            color: #239d4d;
+            font-family: Arial, sans-serif;
+            font-size: 21px;
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .carrier-logo--nine::after {
+            content: "mobile";
+            margin-left: 1px;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 800;
+            letter-spacing: -0.06em;
+        }
+
+        .network-option-label {
+            overflow: hidden;
+            max-width: 100%;
+            color: inherit;
+            font-size: 11px;
+            font-weight: 750;
+            line-height: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -1423,6 +1527,7 @@ input::placeholder, select::placeholder {
         }
 
         .plan-table-wrap {
+            position: relative;
             overflow: hidden;
             border: 1px solid #e1e9dd;
             border-radius: 18px;
@@ -1457,6 +1562,75 @@ input::placeholder, select::placeholder {
         .plan-table tbody tr:hover,
         .plan-table tbody tr.is-selected {
             background: #fbfdf8;
+        }
+
+        .plan-table tbody tr.plan-row-perishing td {
+            animation: plan-row-perish 490ms cubic-bezier(.35,.02,.78,.44) both;
+        }
+
+        .plan-table tbody tr.plan-row-entering td {
+            animation: plan-row-arrive 420ms cubic-bezier(.2,.8,.2,1) both;
+        }
+
+        .plan-table tbody tr.plan-row-entering td:nth-child(2) {
+            animation-delay: 45ms;
+        }
+
+        .plan-table tbody tr.plan-row-entering td:nth-child(3) {
+            animation-delay: 90ms;
+        }
+
+        @keyframes plan-row-perish {
+            to {
+                opacity: 0;
+                filter: blur(4px);
+                transform: translate3d(18px, -5px, 0) rotate(1deg) scale(0.96);
+            }
+        }
+
+        @keyframes plan-row-arrive {
+            from {
+                opacity: 0;
+                filter: blur(3px);
+                transform: translate3d(0, 10px, 0);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .plan-wind-layer {
+            position: absolute;
+            z-index: 2;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .plan-wind-fragment {
+            position: absolute;
+            width: var(--fragment-width, 5px);
+            height: var(--fragment-height, 4px);
+            border-radius: 999px;
+            background: var(--fragment-color, #9fbd81);
+            opacity: 0;
+            animation: plan-wind-away 590ms cubic-bezier(.18,.72,.28,1) var(--fragment-delay, 0ms) both;
+        }
+
+        @keyframes plan-wind-away {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 0, 0) rotate(0) scale(0.7);
+            }
+            18% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--wind-x), var(--wind-y), 0) rotate(var(--wind-rotation)) scale(0.12);
+            }
         }
 
         .plan-bundle {
@@ -1513,6 +1687,20 @@ input::placeholder, select::placeholder {
             background: #e6f2dc;
         }
 
+        .plan-select-button:disabled {
+            border-color: #e5e9e2;
+            background: #f6f7f4;
+            color: #89928a;
+            cursor: not-allowed;
+            opacity: 0.72;
+        }
+
+        .plan-select-button:disabled:hover {
+            transform: none;
+            border-color: #e5e9e2;
+            background: #f6f7f4;
+        }
+
         .plan-select-button:focus-visible,
         .plan-retry-button:focus-visible {
             outline: 3px solid #75b945;
@@ -1528,6 +1716,49 @@ input::placeholder, select::placeholder {
 
         .plan-retry-button {
             margin-top: 12px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .network-option,
+            .plan-table tbody tr.plan-row-perishing td,
+            .plan-table tbody tr.plan-row-entering td,
+            .plan-wind-fragment {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .network-switcher {
+                gap: 6px;
+                margin-bottom: 16px;
+            }
+
+            .network-option {
+                min-height: 70px;
+                padding: 8px 3px;
+                border-radius: 12px;
+            }
+
+            .plan-table th,
+            .plan-table td {
+                padding-right: 10px;
+                padding-left: 10px;
+            }
+
+            .plan-size {
+                font-size: 14px;
+            }
+
+            .plan-price {
+                font-size: 14px;
+            }
+
+            .plan-select-button {
+                min-height: 38px;
+                padding: 0 11px;
+            }
         }
 
         #purchase-page .screen-shell {
@@ -1947,6 +2178,7 @@ input::placeholder, select::placeholder {
                 <p class="screen-kicker">Get started</p>
                 <h1 class="screen-title">Create an account</h1>
                 <p class="screen-description">Sign up with your phone number and a password.</p>
+                <p id="signup-handoff-message" class="signup-handoff-message" role="status" aria-live="polite" hidden></p>
 
                 <form id="signup-form" class="auth-form">
                     <label for="signup-phone">Phone number</label>
@@ -2038,9 +2270,29 @@ input::placeholder, select::placeholder {
 
         <div class="screen-shell">
             <section class="plans-panel">
-                <p class="screen-kicker">MTN data</p>
+                <p id="plans-network-label" class="screen-kicker">MTN data</p>
                 <h1 id="plans-title" class="screen-title" tabindex="-1">Choose a data plan</h1>
                 <p class="screen-description">Pick a bundle, then enter the recipient number.</p>
+
+                <div class="network-switcher" role="group" aria-label="Choose a mobile network">
+                    <button class="network-option" type="button" data-network-select="mtn" aria-label="MTN network" aria-pressed="true">
+                        <span class="carrier-logo carrier-logo--mtn" aria-hidden="true">MTN</span>
+                        <span class="network-option-label">MTN</span>
+                    </button>
+                    <button class="network-option" type="button" data-network-select="airtel" aria-label="Airtel network" aria-pressed="false">
+                        <span class="carrier-logo carrier-logo--airtel" aria-hidden="true">airtel</span>
+                        <span class="network-option-label">Airtel</span>
+                    </button>
+                    <button class="network-option" type="button" data-network-select="glo" aria-label="Glo network" aria-pressed="false">
+                        <span class="carrier-logo carrier-logo--glo" aria-hidden="true">Glo</span>
+                        <span class="network-option-label">Glo</span>
+                    </button>
+                    <button class="network-option" type="button" data-network-select="9mobile" aria-label="9mobile network" aria-pressed="false">
+                    <span class="carrier-logo carrier-logo--nine" aria-hidden="true">9</span>
+                        <span class="network-option-label">9mobile</span>
+                    </button>
+                </div>
+                <p id="network-change-status" class="visually-hidden" role="status" aria-live="polite"></p>
 
                 <div class="plan-table-wrap">
                     <table class="plan-table" aria-label="Available MTN data plans">
@@ -2132,6 +2384,12 @@ input::placeholder, select::placeholder {
         const plansList = document.getElementById('plans-list');
         const plansError = document.getElementById('plans-error');
         const plansRetryButton = document.getElementById('plans-retry-button');
+        const plansNetworkLabel = document.getElementById('plans-network-label');
+        const plansTable = document.querySelector('.plan-table');
+        const networkChangeStatus = document.getElementById('network-change-status');
+        const networkButtons = Array.from(document.querySelectorAll('[data-network-select]'));
+        const planTableWrap = document.querySelector('.plan-table-wrap');
+        const signupHandoffMessage = document.getElementById('signup-handoff-message');
         const selectedBundle = document.getElementById('selected-bundle');
         const selectedBundleSize = document.getElementById('selected-bundle-size');
         const selectedBundlePrice = document.getElementById('selected-bundle-price');
@@ -2145,11 +2403,21 @@ input::placeholder, select::placeholder {
         const LOGIN_REQUIRED_STORAGE_KEY = 'sarki:login-required';
         const HAS_AUTHENTICATED_STORAGE_KEY = 'sarki:has-authenticated';
         const BACK_EXIT_CONFIRMATION_MS = 2200;
+        const NETWORK_LABELS = Object.freeze({
+            mtn: 'MTN',
+            airtel: 'Airtel',
+            glo: 'Glo',
+            '9mobile': '9mobile'
+        });
+        const PLACEHOLDER_PLAN_SIZES = Object.freeze(['1 GB', '2 GB', '3 GB', '10 GB']);
         let currentUser = null;
         let dataPlans = [];
         let dataPlansLoaded = false;
+        let dataPlansFailed = false;
         let dataPlansLoadPromise = null;
         let selectedOfferId = null;
+        let selectedNetwork = 'mtn';
+        let isNetworkTransitioning = false;
         let sessionIdleTimer = null;
         let lastUserActivityAt = 0;
         let lastServerActivityAt = 0;
@@ -2280,6 +2548,15 @@ input::placeholder, select::placeholder {
                 : formatBalance(String(kobo));
         }
 
+        function getDisplayedPlans() {
+            if (selectedNetwork === 'mtn') return dataPlans.slice(0, 4);
+            return PLACEHOLDER_PLAN_SIZES.map((size) => ({
+                offerId: null,
+                size,
+                amountKobo: null
+            }));
+        }
+
         function showLoginPage({ historyMode = 'push' } = {}) {
             if (currentUser) return showWalletPage({ historyMode });
             document.getElementById('login-error').textContent = '';
@@ -2290,9 +2567,11 @@ input::placeholder, select::placeholder {
             displayPage(loginPage, document.getElementById('login-phone'), { historyMode });
         }
 
-        function showSignupPage({ historyMode = 'push' } = {}) {
+        function showSignupPage({ historyMode = 'push', handoff = false } = {}) {
             if (currentUser) return showWalletPage({ historyMode });
             document.getElementById('signup-error').textContent = '';
+            signupHandoffMessage.hidden = !handoff;
+            if (!handoff) signupHandoffMessage.textContent = '';
             displayPage(signupPage, document.getElementById('signup-phone'), { historyMode });
         }
 
@@ -2312,6 +2591,7 @@ input::placeholder, select::placeholder {
 
         function showPurchasePage(offerId, { historyMode = 'push' } = {}) {
             if (!currentUser) return showLoginPage({ historyMode });
+            if (selectedNetwork !== 'mtn') return showPlansPage({ historyMode });
             if (offerId) selectedOfferId = offerId;
             const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
             if (!selectedPlan) return showPlansPage({ historyMode });
@@ -2436,6 +2716,7 @@ input::placeholder, select::placeholder {
             if (!response.ok) {
                 const error = new Error(payload?.error || 'The request could not be completed. Please try again.');
                 error.status = response.status;
+                error.code = payload?.code;
                 if (
                     response.status === 401
                     && path !== '/api/auth/login'
@@ -2521,18 +2802,44 @@ input::placeholder, select::placeholder {
             plansList.append(row);
         }
 
-        function renderDataPlans() {
+        function updateSelectedNetworkLabels() {
+            const networkName = NETWORK_LABELS[selectedNetwork];
+            plansNetworkLabel.textContent = `${networkName} data`;
+            plansTable.setAttribute('aria-label', `Available ${networkName} data plans`);
+            return networkName;
+        }
+
+        function renderDataPlans({ animateArrival = false } = {}) {
+            if (isNetworkTransitioning) return;
             plansList.replaceChildren();
-            dataPlans.forEach((plan) => {
+            const networkName = updateSelectedNetworkLabels();
+            plansError.hidden = selectedNetwork !== 'mtn' || !dataPlansFailed;
+            plansRetryButton.hidden = selectedNetwork !== 'mtn' || !dataPlansFailed;
+
+            const plans = getDisplayedPlans();
+            if (selectedNetwork === 'mtn' && plans.length === 0) {
+                if (dataPlansFailed) {
+                    setPlansStatus('Plans could not be loaded.');
+                    plansError.textContent = 'Please check your connection and try again.';
+                    plansError.hidden = false;
+                    plansRetryButton.hidden = false;
+                } else {
+                    setPlansStatus('Loading plans…');
+                }
+                return;
+            }
+
+            plans.forEach((plan) => {
                 const row = document.createElement('tr');
                 row.classList.toggle('is-selected', plan.offerId === selectedOfferId);
+                if (animateArrival) row.classList.add('plan-row-entering');
 
                 const bundleCell = document.createElement('td');
                 const bundle = document.createElement('div');
                 bundle.className = 'plan-bundle';
                 const network = document.createElement('span');
                 network.className = 'plan-network';
-                network.textContent = 'MTN';
+                network.textContent = networkName;
                 const size = document.createElement('strong');
                 size.className = 'plan-size';
                 size.textContent = plan.size;
@@ -2542,7 +2849,9 @@ input::placeholder, select::placeholder {
                 const priceCell = document.createElement('td');
                 const price = document.createElement('strong');
                 price.className = 'plan-price';
-                price.textContent = formatPlanPrice(plan.amountKobo);
+                const canChoosePlan = selectedNetwork === 'mtn' && typeof plan.offerId === 'string';
+                price.textContent = canChoosePlan ? formatPlanPrice(plan.amountKobo) : '—';
+                if (!canChoosePlan) price.setAttribute('aria-label', 'Price coming soon');
                 priceCell.append(price);
 
                 const actionCell = document.createElement('td');
@@ -2550,16 +2859,105 @@ input::placeholder, select::placeholder {
                 chooseButton.type = 'button';
                 chooseButton.className = 'plan-select-button';
                 chooseButton.textContent = 'Choose';
+                chooseButton.disabled = !canChoosePlan;
                 chooseButton.setAttribute(
                     'aria-label',
-                    `Choose MTN ${plan.size} for ${formatPlanPrice(plan.amountKobo)}`
+                    canChoosePlan
+                        ? `Choose ${networkName} ${plan.size} for ${formatPlanPrice(plan.amountKobo)}`
+                        : `${networkName} ${plan.size} bundle. Pricing and plan details coming soon.`
                 );
-                chooseButton.addEventListener('click', () => showPurchasePage(plan.offerId));
+                if (canChoosePlan) {
+                    chooseButton.addEventListener('click', () => {
+                        if (!isNetworkTransitioning && selectedNetwork === 'mtn') {
+                            showPurchasePage(plan.offerId);
+                        }
+                    });
+                }
                 actionCell.append(chooseButton);
 
                 row.append(bundleCell, priceCell, actionCell);
                 plansList.append(row);
             });
+        }
+
+        function animatePlansAway() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                return Promise.resolve();
+            }
+
+            const rows = Array.from(plansList.querySelectorAll('tr'));
+            if (!rows.length) return Promise.resolve();
+
+            const wrapBounds = planTableWrap.getBoundingClientRect();
+            const particleLayer = document.createElement('div');
+            particleLayer.className = 'plan-wind-layer';
+            particleLayer.setAttribute('aria-hidden', 'true');
+            planTableWrap.append(particleLayer);
+
+            const fragmentColors = ['#94b879', '#c4d8ab', '#e4c779', '#83ad8a'];
+            rows.forEach((row, rowIndex) => {
+                row.classList.add('plan-row-perishing');
+                const rowBounds = row.getBoundingClientRect();
+                for (let index = 0; index < 12; index += 1) {
+                    const fragment = document.createElement('span');
+                    fragment.className = 'plan-wind-fragment';
+                    fragment.style.left = `${rowBounds.left - wrapBounds.left + Math.random() * rowBounds.width}px`;
+                    fragment.style.top = `${rowBounds.top - wrapBounds.top + Math.random() * rowBounds.height}px`;
+                    fragment.style.setProperty('--wind-x', `${Math.round(Math.random() * 110 - 30)}px`);
+                    fragment.style.setProperty('--wind-y', `${Math.round(-28 - Math.random() * 92)}px`);
+                    fragment.style.setProperty('--wind-rotation', `${Math.round(Math.random() * 240 - 120)}deg`);
+                    fragment.style.setProperty('--fragment-delay', `${rowIndex * 38 + Math.round(Math.random() * 80)}ms`);
+                    fragment.style.setProperty('--fragment-width', `${3 + Math.round(Math.random() * 4)}px`);
+                    fragment.style.setProperty('--fragment-height', `${3 + Math.round(Math.random() * 5)}px`);
+                    fragment.style.setProperty('--fragment-color', fragmentColors[index % fragmentColors.length]);
+                    particleLayer.append(fragment);
+                }
+            });
+
+            return new Promise((resolve) => {
+                window.setTimeout(() => {
+                    particleLayer.remove();
+                    resolve();
+                }, 650);
+            });
+        }
+
+        async function switchDataNetwork(networkId) {
+            if (!NETWORK_LABELS[networkId] || networkId === selectedNetwork || isNetworkTransitioning) return;
+
+            const plansPanel = document.querySelector('.plans-panel');
+            selectedNetwork = networkId;
+            isNetworkTransitioning = true;
+            networkButtons.forEach((button) => {
+                button.setAttribute('aria-pressed', String(button.dataset.networkSelect === networkId));
+            });
+            plansList.inert = true;
+            plansList.setAttribute('aria-busy', 'true');
+            document.querySelector('.plans-panel').setAttribute('aria-busy', 'true');
+
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!reducedMotion) await animatePlansAway();
+
+            isNetworkTransitioning = false;
+            plansList.inert = false;
+            plansList.removeAttribute('aria-busy');
+            plansPanel.removeAttribute('aria-busy');
+            updateSelectedNetworkLabels();
+
+            if (networkId === 'mtn' && !dataPlansLoaded) {
+                plansError.hidden = true;
+                plansRetryButton.hidden = true;
+                setPlansStatus('Loading plans…');
+                plansPanel.setAttribute('aria-busy', 'true');
+                try {
+                    await loadDataPlans();
+                } finally {
+                    plansPanel.removeAttribute('aria-busy');
+                }
+            } else {
+                renderDataPlans({ animateArrival: !reducedMotion });
+            }
+            networkChangeStatus.textContent = `Showing ${NETWORK_LABELS[networkId]} bundles.`;
         }
 
         function setLandingPlansError() {
@@ -2638,14 +3036,15 @@ input::placeholder, select::placeholder {
 
             plansError.hidden = true;
             plansRetryButton.hidden = true;
-            setPlansStatus('Loading plans…');
+            dataPlansFailed = false;
+            if (selectedNetwork === 'mtn') setPlansStatus('Loading plans…');
 
             dataPlansLoadPromise = (async () => {
                 try {
                     const result = await requestJson('/api/data/plans');
                     if (
                         !Array.isArray(result?.plans)
-                        || result.plans.length === 0
+                        || result.plans.length < 4
                         || result.plans.some((plan) => (
                             !plan
                             || typeof plan.offerId !== 'string'
@@ -2655,16 +3054,15 @@ input::placeholder, select::placeholder {
                     ) {
                         throw new Error('No data plans are available right now.');
                     }
-                    dataPlans = result.plans;
+                    dataPlans = result.plans.slice(0, 4);
+                    dataPlansFailed = false;
                     renderDataPlans();
                     renderLandingBundles();
                     dataPlansLoaded = true;
                     return dataPlans;
                 } catch {
-                    setPlansStatus('Plans could not be loaded.');
-                    plansError.textContent = 'Please check your connection and try again.';
-                    plansError.hidden = false;
-                    plansRetryButton.hidden = false;
+                    dataPlansFailed = true;
+                    if (!isNetworkTransitioning) renderDataPlans();
                     setLandingPlansError();
                     return null;
                 } finally {
@@ -2828,6 +3226,39 @@ input::placeholder, select::placeholder {
             }
         });
 
+        async function continueWithAccountCreation(credentials) {
+            const signupForm = document.getElementById('signup-form');
+            const signupPhone = document.getElementById('signup-phone');
+            const signupPassword = document.getElementById('signup-password');
+            const signupError = document.getElementById('signup-error');
+            const signupSubmit = signupForm.querySelector('.auth-submit');
+            const originalLabel = signupSubmit.textContent;
+
+            signupPhone.value = String(credentials.phone || '');
+            signupPassword.value = String(credentials.password || '');
+            signupHandoffMessage.textContent =
+                'It looks like you don’t have an account yet. We’ll create one with the phone number and password you just entered.';
+            showSignupPage({ handoff: true });
+            signupSubmit.disabled = true;
+            signupSubmit.textContent = 'Creating your account…';
+
+            await new Promise((resolve) => window.setTimeout(resolve, 1200));
+            if (signupPage.hidden) {
+                signupSubmit.disabled = false;
+                signupSubmit.textContent = originalLabel;
+                return;
+            }
+
+            signupSubmit.disabled = false;
+            signupSubmit.textContent = originalLabel;
+            await submitAuthForm(
+                { preventDefault() {} },
+                signupForm,
+                '/api/auth/signup',
+                signupError,
+            );
+        }
+
         async function submitAuthForm(event, form, endpoint, errorElement) {
             event.preventDefault();
             errorElement.textContent = '';
@@ -2835,9 +3266,9 @@ input::placeholder, select::placeholder {
             const originalLabel = submitButton.textContent;
             submitButton.disabled = true;
             submitButton.textContent = 'Please wait…';
+            const credentials = Object.fromEntries(new FormData(form).entries());
 
             try {
-                const credentials = Object.fromEntries(new FormData(form).entries());
                 const result = await requestJson(endpoint, { method: 'POST', body: credentials });
                 currentUser = result.user;
                 markAuthenticatedInBrowser();
@@ -2847,32 +3278,14 @@ input::placeholder, select::placeholder {
                 authConnectionStatus.textContent = '';
                 document.getElementById('wallet-error').textContent = '';
                 form.reset();
+                signupHandoffMessage.hidden = true;
+                signupHandoffMessage.textContent = '';
                 updateLandingActions();
                 showWalletPage();
             } catch (error) {
                 const message = error.message || 'Unable to sign in right now. Please try again.';
-                if (message === 'NO_ACCOUNT') {
-                    errorElement.innerHTML = `
-                        <div class="no-account-prompt">
-                            <div class="no-account-icon">👤</div>
-                            <div class="no-account-text">
-                                <strong>No account found</strong>
-                                <span>This phone number isn’t registered yet.</span>
-                            </div>
-                            <button type="button" class="no-account-signup" id="no-account-signup-btn">Create account</button>
-                        </div>
-                    `;
-                    const signupBtn = document.getElementById('no-account-signup-btn');
-                    if (signupBtn) {
-                        signupBtn.addEventListener('click', () => {
-                            const phoneInput = document.getElementById('login-phone');
-                            const signupPhone = document.getElementById('signup-phone');
-                            if (phoneInput && signupPhone && phoneInput.value) {
-                                signupPhone.value = phoneInput.value;
-                            }
-                            showSignupPage();
-                        });
-                    }
+                if (endpoint === '/api/auth/login' && (error.code === 'NO_ACCOUNT' || message === 'NO_ACCOUNT')) {
+                    await continueWithAccountCreation(credentials);
                 } else {
                     errorElement.textContent = message;
                 }
@@ -2923,6 +3336,11 @@ input::placeholder, select::placeholder {
         heroLoginButton.addEventListener('click', openAccount);
         document.getElementById('open-signup').addEventListener('click', showSignupPage);
         document.getElementById('open-login').addEventListener('click', showLoginPage);
+        networkButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                void switchDataNetwork(button.dataset.networkSelect);
+            });
+        });
         document.querySelectorAll('[data-auth-home]').forEach((button) => {
             button.addEventListener('click', () => showLandingPage());
         });
