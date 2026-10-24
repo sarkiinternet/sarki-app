@@ -35,10 +35,11 @@ if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
 }
 
 class HttpError extends Error {
-    constructor(status, message, retryAfterSeconds) {
+    constructor(status, message, retryAfterSeconds, code) {
         super(message);
         this.status = status;
         this.retryAfterSeconds = retryAfterSeconds;
+        this.code = code;
     }
 }
 
@@ -283,7 +284,16 @@ async function login(request, response) {
     const savedHash = account ? Buffer.from(account.password_hash) : Buffer.alloc(PASSWORD_HASH_BYTES);
     const passwordMatches = timingSafeEqual(candidateHash, savedHash);
 
-    if (!account || !passwordMatches) {
+    if (!account) {
+        throw new HttpError(
+            401,
+            "This phone number does not have an account yet.",
+            undefined,
+            "NO_ACCOUNT",
+        );
+    }
+
+    if (!passwordMatches) {
         throw new HttpError(401, "Phone number or password is incorrect.");
     }
 
@@ -470,6 +480,7 @@ const server = createServer(async (request, response) => {
             error: status >= 500 && !error.expose
                 ? "SARKI could not complete that request. Please try again."
                 : error.message,
+            ...(error instanceof HttpError && error.code ? { code: error.code } : {}),
         }, headers);
     }
 });
