@@ -1,0 +1,2867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARKI | Data bundles</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23b6f36a'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' font-weight='700' fill='%23183b2b'%3ES%3C/text%3E%3C/svg%3E">
+    <style>
+       /* style.css */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* Light gray background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.container {
+    width: 400px;
+    background-color: #ffffff;
+    padding: 30px;
+    text-align: left;
+    position: relative; /* Allow positioning of children */
+    z-index: 1;       /* Ensure it's on top of the background */
+    
+}
+
+/* Updated h1 Styling */
+h1 {
+    font-family: 'Roboto Slab', serif; /* Choose a modern font */
+    font-size: 30px; /* Increase font size */
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 10px 0; /* Add padding around the text */
+    background: radial-gradient(circle at 50% 100%, #007bff, #3b82f6); /* Example gradient */
+    -webkit-background-clip: text; /* For Safari */
+    -webkit-text-fill-color: transparent; /* For Safari */
+    background-clip: text;
+    text-fill-color: transparent; /* For other browsers */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add a text shadow */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+}
+
+label {
+    font-size: 14px;
+    color: #666;
+}
+
+input, select {
+    height: 50px;
+    padding: 14px;
+    font-size: 16px; 
+    border: 1px solid #ddd; 
+    border-radius: 10px; /* Slightly larger rounded corners */
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;  /* Very light background color */
+    box-sizing: border-box;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* More pronounced focus outline */
+}
+
+/* ... placeholder text style ... */
+input::placeholder, select::placeholder {
+    color: #999; /* Slightly lighter placeholder color */
+}
+
+/* ...  Custom dropdown arrow using SVG ... */
+#network {
+    appearance: none; 
+    -webkit-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z" fill="#3b82f6" /></svg>');
+    background-position: 95% center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    padding: 14px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* ... hover effect for dropdown arrow ... */
+#network:hover {
+    background-color: #e0e7ff; /* Subtle background color change on hover */
+}
+
+/* ... focus outline for dropdown ... */
+#network:focus {
+    border-color: #007bff; 
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    
+}
+
+.quick-amounts button {
+    height: 40px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #e0e7ff;
+    color: #3b82f6;
+    font-weight: bold;
+    transition: all 0.3s ease; /* Include transform for the hover effect */
+    cursor: pointer;
+    padding: 12px 16px;
+}
+
+.quick-amounts button:hover {
+    background-color: #3b82f6;
+    color: #ffffff;
+    transform: translateY(-2px); /* Slightly lift the button */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a hover shadow */
+}
+
+.submit-btn {
+    height: 50px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff; 
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 120px;
+}
+
+.submit-btn:hover {
+    background-color: #0069d9;
+        }
+    
+/* New styles for the button and label */
+.top-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.top-right-button {
+    height: 30px; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 6px;
+    background-color: #e0e7ff; 
+    color: #3b82f6;
+    font-weight: bold;
+    transition: all 0.3s ease; 
+    cursor: pointer;
+}
+
+#balance-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 35%; /* Matches the form's height */
+    
+    text-align: center;
+    margin-bottom: 45%; /* Keep balance section below the header */
+    background-color: #f8f9fa; /* Light background */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Add some padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease; /* Add a smooth transition */
+}
+
+#balance-board:hover {
+    background-color: #e0e7ff; /* Slightly lighter background on hover */
+}
+
+#balance-board h2 {
+    font-size: 24px;
+    color: #3b82f6;
+    margin-top: 10px; 
+    font-weight: normal; /* Less bold */
+    font-family: 'Roboto Slab', serif; /* Use a more modern font */
+}
+
+#balance-amount {
+    font-size: 38px; /* Larger font size */
+    font-weight: bold;
+    color: #3b82f6;
+    margin-top: 10px;
+    font-family: 'Roboto Slab', serif; /* Use a more modern font */
+}
+        /* deposit-details.css */
+#account-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#account-details p {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: #f8f9fa; /* Light background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    font-weight: bold;
+}
+        #balance-board.smaller-balance {
+     /* Adjust the height as needed */
+    margin-bottom: 35%; /* Adjust the margin as needed */
+            
+        }
+
+        :root {
+            color-scheme: light;
+            --ink: #17211c;
+            --muted: #68736c;
+            --green: #b6f36a;
+            --green-dark: #183b2b;
+            --paper: #f6f7f2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            display: block;
+            height: auto;
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body.session-checking > main {
+            visibility: hidden;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .landing-page {
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 82% 30%, rgba(182, 243, 106, 0.19), transparent 32rem),
+                var(--paper);
+        }
+
+        .landing-page::after {
+            position: absolute;
+            content: "";
+            width: 25rem;
+            height: 25rem;
+            border: 1px solid rgba(24, 59, 43, 0.08);
+            border-radius: 50%;
+            right: -10rem;
+            top: 18rem;
+            pointer-events: none;
+        }
+
+        .site-header,
+        .landing-content,
+        .site-footer {
+            width: min(1120px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        .site-header {
+            height: 92px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+            border-bottom: 1px solid rgba(23, 33, 28, 0.1);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--ink);
+            font-size: 16px;
+            font-weight: 850;
+            letter-spacing: 0.13em;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            position: relative;
+            width: 38px;
+            height: 30px;
+            display: grid;
+            flex: 0 0 38px;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--green);
+        }
+
+        .brand-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 64px;
+            height: 64px;
+            max-width: none;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: multiply;
+        }
+
+        .login-button,
+        .back-home-button {
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 750;
+            transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .login-button {
+            min-height: 46px;
+            padding: 0 23px;
+            background: var(--green-dark);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(24, 59, 43, 0.12);
+        }
+
+        .login-button:hover,
+        .back-home-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-button:hover {
+            background: #24553d;
+            box-shadow: 0 12px 24px rgba(24, 59, 43, 0.18);
+        }
+
+        .login-button:focus-visible,
+        .back-home-button:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        .landing-content {
+            position: relative;
+            z-index: 1;
+            padding: 84px 0 68px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.85fr);
+            align-items: center;
+            gap: 76px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #4c7657;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #79bd4a;
+            box-shadow: 0 0 0 4px rgba(121, 189, 74, 0.15);
+        }
+
+        .hero-copy h1 {
+            max-width: 610px;
+            margin: 23px 0 20px;
+            color: var(--ink);
+            font-family: inherit;
+            font-size: clamp(48px, 6.4vw, 78px);
+            font-weight: 780;
+            letter-spacing: -0.075em;
+            line-height: 0.99;
+            text-align: left;
+            text-shadow: none;
+            -webkit-text-fill-color: currentColor;
+            background: none;
+        }
+
+        .hero-copy h1 span {
+            color: #648d44;
+        }
+
+        .hero-description {
+            max-width: 455px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-top: 31px;
+        }
+
+        .hero-note {
+            color: #758078;
+            font-size: 12px;
+        }
+
+        .bundle-showcase {
+            position: relative;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 17px;
+            perspective: 1200px;
+        }
+
+        .bundle-cards-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bundle-orbit {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(24, 59, 43, 0.11);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .bundle-orbit::before,
+        .bundle-orbit::after {
+            position: absolute;
+            content: "";
+            border: 1px solid rgba(24, 59, 43, 0.09);
+            border-radius: 50%;
+            inset: 25px;
+        }
+
+        .bundle-orbit::after {
+            inset: 53px;
+        }
+
+        .bundle-card {
+            position: absolute;
+            width: 300px;
+            min-height: 280px;
+            padding: 26px;
+            overflow: hidden;
+            border-radius: 26px;
+            background: var(--green-dark);
+            color: #fff;
+            box-shadow: 0 20px 50px rgba(24, 59, 43, 0.18);
+            transition: transform 900ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 700ms ease,
+                        box-shadow 700ms ease,
+                        z-index 0ms 450ms;
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        .bundle-card.front {
+            z-index: 30;
+            transform: translateX(0) translateY(-10px) scale(1) rotate(-2deg);
+            opacity: 1;
+            box-shadow: 0 32px 80px rgba(24, 59, 43, 0.28);
+        }
+
+        .bundle-card.left-back {
+            z-index: 10;
+            transform: translateX(-140px) translateY(20px) scale(0.78) rotate(-12deg);
+            opacity: 0.65;
+        }
+
+        .bundle-card.right-back {
+            z-index: 10;
+            transform: translateX(140px) translateY(20px) scale(0.78) rotate(12deg);
+            opacity: 0.65;
+        }
+
+        .bundle-card::after {
+            position: absolute;
+            content: "";
+            width: 160px;
+            height: 160px;
+            right: -70px;
+            bottom: -90px;
+            border: 1px solid rgba(182, 243, 106, 0.33);
+            border-radius: 50%;
+            box-shadow: 0 0 0 18px rgba(182, 243, 106, 0.05), 0 0 0 38px rgba(182, 243, 106, 0.04);
+            pointer-events: none;
+        }
+
+        .bundle-card-top,
+        .bundle-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .bundle-card-top {
+            color: #cce0d2;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mtn-logo {
+            width: 46px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #ffca05;
+            color: #171717;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -0.08em;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+        }
+
+        .bundle-amount {
+            margin: 45px 0 0;
+            font-size: clamp(62px, 7vw, 80px);
+            font-weight: 800;
+            letter-spacing: -0.08em;
+            line-height: 1;
+        }
+
+        .bundle-amount small {
+            margin-left: 6px;
+            color: #cfdbd2;
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .bundle-price {
+            margin: 12px 0 32px;
+            color: var(--green);
+            font-size: 30px;
+            font-weight: 780;
+            letter-spacing: -0.04em;
+        }
+
+        .bundle-card-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+            padding-top: 17px;
+            color: #d0ddd4;
+            font-size: 12px;
+        }
+
+        .bundle-card-bottom strong {
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .app-store-badges {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: min(100%, 340px);
+        }
+
+        .store-badge {
+            display: flex;
+            flex: 1 1 0;
+            align-items: center;
+            gap: 10px;
+            min-height: 58px;
+            padding: 9px 12px;
+            border: 1px solid rgba(23, 33, 28, 0.09);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 20px rgba(24, 59, 43, 0.06);
+            color: var(--ink);
+            text-align: left;
+        }
+
+        .store-badge-icon {
+            width: 25px;
+            height: 25px;
+            display: grid;
+            flex: 0 0 25px;
+            place-items: center;
+            color: #315f3e;
+        }
+
+        .store-badge-icon svg {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+
+        .store-badge-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .store-badge-copy small {
+            color: #758078;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            line-height: 1;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .store-badge-copy strong {
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .trust-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 24px 0;
+            border-top: 1px solid rgba(23, 33, 28, 0.1);
+        }
+
+        .trust-copy {
+            color: #778078;
+            font-size: 13px;
+        }
+
+        .trust-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 23px;
+            color: #44534a;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .trust-points span::before {
+            content: "•";
+            margin-right: 8px;
+            color: #78b84d;
+        }
+
+        .site-footer {
+            padding: 18px 0 25px;
+            color: #8a928b;
+            font-size: 11px;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 18px;
+            margin: 10px 0 14px;
+            color: #657169;
+            font-size: 12px;
+        }
+
+        .footer-contact a {
+            color: #315f3e;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .footer-contact a:hover,
+        .footer-contact a:focus-visible {
+            text-decoration: underline;
+        }
+
+        .back-exit-notice {
+            position: fixed;
+            z-index: 20;
+            right: 18px;
+            bottom: max(18px, env(safe-area-inset-bottom));
+            left: 18px;
+            width: fit-content;
+            max-width: calc(100% - 36px);
+            margin: 0 auto;
+            padding: 13px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: #183b2b;
+            box-shadow: 0 10px 28px rgba(24, 59, 43, 0.24);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .back-exit-notice[hidden] {
+            display: none;
+        }
+
+        .container#purchase-page {
+            width: min(100% - 32px, 460px);
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 26px 0 40px;
+        }
+
+        #purchase-page > h1 {
+            margin: 0 0 20px;
+            padding: 6px 0;
+            font-family: inherit;
+            font-size: 28px;
+            font-weight: 850;
+            letter-spacing: 0.08em;
+            text-align: left;
+            text-shadow: none;
+        }
+
+        #purchase-page .top-row {
+            gap: 8px;
+            align-items: center;
+        }
+
+        .back-home-button {
+            min-height: 38px;
+            padding: 0 14px;
+            background: #e8eee7;
+            color: #31513b;
+        }
+
+        #purchase-page .submit-btn {
+            margin-top: 18px;
+        }
+
+        #purchase-page #balance-board {
+            min-height: 180px;
+            margin-bottom: 28px;
+        }
+
+        @keyframes card-enter {
+            from { opacity: 0; transform: translateY(12px) rotate(-6deg); }
+            to { opacity: 1; transform: translateY(0) rotate(-3deg); }
+        }
+
+        @media (max-width: 760px) {
+            .site-header,
+            .landing-content,
+            .site-footer {
+                width: min(100% - 36px, 540px);
+            }
+
+            .site-header {
+                height: 76px;
+            }
+
+            .landing-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 58px 0 40px;
+            }
+
+            .hero-copy h1 {
+                max-width: 500px;
+                font-size: clamp(48px, 12vw, 70px);
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .hero-actions .login-button {
+                white-space: nowrap;
+            }
+
+            .bundle-showcase {
+                min-height: 420px;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .bundle-cards-container {
+                height: 340px;
+            }
+
+            .bundle-orbit {
+                width: 320px;
+                height: 320px;
+            }
+
+            .bundle-card {
+                width: 260px;
+                min-height: 250px;
+                padding: 22px;
+            }
+
+            .bundle-card.front {
+                transform: translateX(0) translateY(-8px) scale(1) rotate(-2deg);
+            }
+
+            .bundle-card.left-back {
+                transform: translateX(-100px) translateY(16px) scale(0.75) rotate(-10deg);
+            }
+
+            .bundle-card.right-back {
+                transform: translateX(100px) translateY(16px) scale(0.75) rotate(10deg);
+            }
+
+            .bundle-amount {
+                margin-top: 30px;
+                font-size: 52px;
+            }
+
+            .trust-strip {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .site-header,
+            .landing-content,
+            .site-footer {
+                width: calc(100% - 28px);
+            }
+
+            .hero-actions {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .bundle-orbit {
+                width: 290px;
+                height: 290px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .app-screen {
+            min-height: 100vh;
+            padding-bottom: 48px;
+            background:
+                radial-gradient(ellipse at 88% 18%, rgba(182, 243, 106, 0.16), transparent 26rem),
+                var(--paper);
+        }
+
+        .app-header {
+            width: min(920px, calc(100% - 48px));
+            height: 82px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(23, 33, 28, 0.1);
+        }
+
+        .screen-shell {
+            width: min(720px, calc(100% - 40px));
+            margin: 0 auto;
+            padding-top: 54px;
+        }
+
+        .screen-kicker {
+            margin: 0 0 12px;
+            color: #648d44;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .screen-title {
+            margin: 0;
+            color: var(--ink);
+            font-family: inherit;
+            font-size: clamp(32px, 5vw, 46px);
+            font-weight: 780;
+            letter-spacing: -0.06em;
+            line-height: 1.05;
+            text-align: left;
+            text-shadow: none;
+            background: none;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        .screen-description {
+            margin: 12px 0 28px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .auth-shell {
+            width: min(480px, calc(100% - 36px));
+        }
+
+        .auth-panel {
+            padding: 30px;
+            border: 1px solid rgba(23, 33, 28, 0.08);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: 0 18px 48px rgba(24, 59, 43, 0.08);
+        }
+
+        .auth-panel .screen-description {
+            margin-bottom: 24px;
+        }
+
+        .auth-form {
+            gap: 11px;
+        }
+
+        .auth-form label {
+            margin-top: 4px;
+            color: #4c5b50;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .auth-form input {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid #dce5da;
+            border-radius: 12px;
+            background: #fbfcf9;
+            color: var(--ink);
+            font: inherit;
+            font-size: 15px;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .auth-form input:focus {
+            border-color: #83b957;
+            box-shadow: 0 0 0 3px rgba(131, 185, 87, 0.16);
+            outline: none;
+        }
+
+        .auth-help {
+            margin: -4px 0 4px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .auth-error {
+            min-height: 1.2em;
+            margin: 0;
+            color: #a12e2e;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .auth-submit:disabled {
+            cursor: wait;
+            opacity: 0.68;
+        }
+
+        .app-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-submit {
+            min-height: 50px;
+            margin-top: 12px;
+            border: 0;
+            border-radius: 14px;
+            background: var(--green-dark);
+            color: #fff;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: background 180ms ease, transform 180ms ease;
+        }
+
+        .auth-submit:hover {
+            transform: translateY(-1px);
+            background: #24553d;
+        }
+
+        .auth-switch {
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .auth-switch button {
+            padding: 0;
+            border: 0;
+            background: none;
+            color: #315f3e;
+            font: inherit;
+            font-weight: 750;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .auth-submit:focus-visible,
+        .auth-switch button:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        .wallet-card {
+            position: relative;
+            width: 100%;
+            perspective: 1400px;
+        }
+
+        .wallet-card-inner {
+            position: relative;
+            min-height: 286px;
+            transform-style: preserve-3d;
+            transition: transform 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .wallet-card.is-flipped .wallet-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .wallet-card-face {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 30px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #183b2b 0%, #28553b 100%);
+            color: #fff;
+            box-shadow: 0 24px 56px rgba(24, 59, 43, 0.18);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .wallet-card-face::after {
+            position: absolute;
+            content: "";
+            width: 240px;
+            height: 240px;
+            right: -118px;
+            bottom: -164px;
+            border: 1px solid rgba(182, 243, 106, 0.3);
+            border-radius: 50%;
+            box-shadow: 0 0 0 22px rgba(182, 243, 106, 0.05), 0 0 0 48px rgba(182, 243, 106, 0.04);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wallet-card-face > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-card-front {
+            transform: rotateY(0deg);
+        }
+
+        .wallet-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(140deg, #163628 0%, #234c38 58%, #315e41 100%);
+        }
+
+        .wallet-demo-badge {
+            padding: 6px 9px;
+            border: 1px solid rgba(182, 243, 106, 0.35);
+            border-radius: 999px;
+            background: rgba(182, 243, 106, 0.12);
+            color: #d8f9b6;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .deposit-card-content {
+            margin-top: 24px;
+        }
+
+        .deposit-kicker {
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .deposit-title {
+            margin: 6px 0 5px;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 780;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .deposit-description {
+            margin: 0;
+            color: #d8e7dc;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .deposit-gateway {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 13px;
+            padding: 11px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .deposit-gateway span {
+            color: #c9d9ce;
+            font-size: 11px;
+        }
+
+        .deposit-gateway strong {
+            color: #fff;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        .deposit-note {
+            margin: 10px 0 0;
+            color: #d8e7dc;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .wallet-card-back .wallet-card-bottom {
+            margin-top: auto;
+            padding-top: 14px;
+        }
+
+        .wallet-card-top,
+        .wallet-card-bottom,
+        .wallet-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .wallet-card-top {
+            color: #c9d9ce;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .wallet-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #dce9dd;
+            font-size: 12px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .wallet-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 4px rgba(182, 243, 106, 0.15);
+        }
+
+        .wallet-balance-label {
+            margin: 42px 0 8px;
+            color: #c9d9ce;
+            font-size: 13px;
+        }
+
+        .wallet-balance {
+            margin: 0;
+            color: #fff;
+            font-size: clamp(36px, 7vw, 54px);
+            font-weight: 780;
+            letter-spacing: -0.06em;
+            line-height: 1.05;
+            overflow-wrap: anywhere;
+        }
+
+        #wallet-page #balance-amount {
+            margin: 0;
+            color: #fff;
+            font-family: inherit;
+            font-size: clamp(36px, 7vw, 54px);
+            font-weight: 780;
+            letter-spacing: -0.06em;
+            line-height: 1.05;
+        }
+
+        .wallet-card-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .wallet-card-bottom span {
+            color: #c9d9ce;
+            font-size: 13px;
+        }
+
+        .wallet-actions {
+            justify-content: flex-start;
+            margin-top: 24px;
+        }
+
+        .wallet-action,
+        .screen-back-button,
+        .deposit-toggle {
+            min-height: 44px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 999px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .wallet-action:hover,
+        .screen-back-button:hover,
+        .deposit-toggle:hover {
+            transform: translateY(-2px);
+        }
+
+        .wallet-action-data {
+            background: var(--green);
+            color: var(--green-dark);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .wallet-action-data:hover {
+            background: #c5ff83;
+        }
+
+        .wallet-action-secondary,
+        .screen-back-button,
+        .deposit-toggle {
+            background: #e8eee7;
+            color: #31513b;
+        }
+
+        .deposit-details {
+            margin-top: 18px;
+            padding: 22px;
+            border: 1px solid rgba(23, 33, 28, 0.08);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .deposit-details h2 {
+            margin: 0 0 14px;
+            color: var(--ink);
+            font-size: 16px;
+        }
+
+        .deposit-details p {
+            margin: 8px 0 0;
+            color: #566158;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        #plans-page .screen-shell {
+            width: min(720px, calc(100% - 40px));
+            padding-top: 54px;
+        }
+
+        .plans-panel {
+            padding: 30px;
+            border: 1px solid rgba(23, 33, 28, 0.08);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 18px 48px rgba(24, 59, 43, 0.08);
+        }
+
+        .plans-panel .screen-description {
+            margin-bottom: 24px;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .plan-table-wrap {
+            overflow: hidden;
+            border: 1px solid #e1e9dd;
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .plan-table th {
+            padding: 14px 16px;
+            background: #f5f8f2;
+            color: #718073;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .plan-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #edf1ea;
+        }
+
+        .plan-table tbody tr {
+            transition: background 160ms ease;
+        }
+
+        .plan-table tbody tr:hover,
+        .plan-table tbody tr.is-selected {
+            background: #fbfdf8;
+        }
+
+        .plan-bundle {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .plan-network {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            min-height: 30px;
+            padding: 0 8px;
+            border-radius: 9px;
+            background: #edf6e7;
+            color: #527a37;
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0.07em;
+        }
+
+        .plan-size {
+            color: var(--ink);
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .plan-price {
+            color: var(--ink);
+            font-size: 17px;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        .plan-select-button {
+            min-height: 40px;
+            padding: 0 15px;
+            border: 1px solid #dce9d8;
+            border-radius: 999px;
+            background: #f0f6eb;
+            color: #31513b;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+        }
+
+        .plan-select-button:hover {
+            transform: translateY(-1px);
+            border-color: #b7d39f;
+            background: #e6f2dc;
+        }
+
+        .plan-select-button:focus-visible,
+        .plan-retry-button:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        .plan-table-status {
+            padding: 24px 16px !important;
+            color: #718073;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .plan-retry-button {
+            margin-top: 12px;
+        }
+
+        #purchase-page .screen-shell {
+            width: min(560px, calc(100% - 36px));
+            padding-top: 38px;
+        }
+
+        .purchase-panel {
+            padding: 30px;
+            border: 1px solid rgba(23, 33, 28, 0.08);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: 0 18px 48px rgba(24, 59, 43, 0.08);
+        }
+
+        .purchase-panel .screen-description {
+            margin-bottom: 26px;
+        }
+
+        #purchase-page form {
+            display: grid;
+            gap: 11px;
+        }
+
+        .selected-bundle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 16px;
+            border: 1px solid #dce9d8;
+            border-radius: 14px;
+            background: #f3f8ee;
+            color: #31513b;
+        }
+
+        .selected-bundle strong {
+            color: var(--ink);
+            font-size: 19px;
+        }
+
+        .purchase-wallet-balance {
+            margin: 4px 0;
+            color: #566158;
+            font-size: 13px;
+        }
+
+        .ported-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            color: #4c5b50;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #purchase-page .ported-option input {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            margin: 0;
+            accent-color: var(--green-dark);
+        }
+
+        .purchase-message {
+            margin: 8px 0;
+            padding: 12px 14px;
+            border: 1px solid #d7e7cf;
+            border-radius: 12px;
+            background: #f2f8ed;
+            color: #31513b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .purchase-message[data-state="failed"] {
+            border-color: #e6c7c7;
+            background: #fff4f3;
+            color: #8c3333;
+        }
+
+        .order-history {
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid #e3e9e0;
+        }
+
+        .order-history h2 {
+            margin: 0 0 12px;
+            color: var(--ink);
+            font-size: 16px;
+        }
+
+        .order-history-list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .order-history-list li {
+            display: grid;
+            gap: 5px;
+            padding: 12px;
+            border: 1px solid #e4e9e1;
+            border-radius: 12px;
+            color: #566158;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .order-history-list strong {
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .wallet-funding-notice {
+            margin: 14px 0;
+            color: #566158;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        #purchase-page label {
+            margin-top: 4px;
+            color: #4c5b50;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        #purchase-page input,
+        #purchase-page select {
+            width: 100%;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid #dce5da;
+            border-radius: 12px;
+            background-color: #fbfcf9;
+            color: var(--ink);
+            font: inherit;
+            font-size: 15px;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        #purchase-page input:focus,
+        #purchase-page select:focus {
+            border-color: #83b957;
+            box-shadow: 0 0 0 3px rgba(131, 185, 87, 0.16);
+        }
+
+        #purchase-page .quick-amounts {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 9px;
+            margin-top: 5px;
+        }
+
+        #purchase-page .quick-amounts button {
+            min-height: 42px;
+            height: auto;
+            padding: 9px;
+            border: 1px solid #dce9d8;
+            border-radius: 12px;
+            background: #f0f6eb;
+            color: #31513b;
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        #purchase-page .quick-amounts button:hover,
+        #purchase-page .quick-amounts button:focus-visible {
+            border-color: #83b957;
+            background: #e3f2d8;
+        }
+
+        #purchase-page .submit-btn {
+            min-height: 50px;
+            height: auto;
+            margin-top: 12px;
+            border-radius: 14px;
+            background: var(--green-dark);
+            font-size: 15px;
+        }
+
+        #purchase-page .submit-btn:hover {
+            background: #24553d;
+        }
+
+        .wallet-action:focus-visible,
+        .screen-back-button:focus-visible,
+        .deposit-toggle:focus-visible,
+        #purchase-page .quick-amounts button:focus-visible,
+        #purchase-page .submit-btn:focus-visible {
+            outline: 3px solid #75b945;
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .wallet-card-inner {
+                transition: none;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .app-header {
+                width: calc(100% - 36px);
+                height: 72px;
+            }
+
+            .screen-shell,
+            #purchase-page .screen-shell {
+                width: calc(100% - 32px);
+                padding-top: 38px;
+            }
+
+            .wallet-card-face,
+            .purchase-panel,
+            .plans-panel,
+            .auth-panel {
+                padding: 22px;
+            }
+
+            .wallet-card-inner {
+                min-height: 292px;
+            }
+
+            .plan-table th,
+            .plan-table td {
+                padding: 12px 9px;
+            }
+
+            .plan-size {
+                font-size: 14px;
+            }
+
+            .plan-price {
+                font-size: 15px;
+            }
+
+            .plan-select-button {
+                min-height: 38px;
+                padding: 0 10px;
+                font-size: 11px;
+            }
+
+            .wallet-actions {
+                align-items: stretch;
+                flex-direction: row;
+            }
+
+            .wallet-actions .wallet-action {
+                width: auto;
+                flex: 1 1 0;
+                padding: 0 12px;
+            }
+
+            .app-store-badges {
+                width: min(100%, 320px);
+            }
+        }
+
+    </style>
+    
+</head>
+<body class="session-checking">
+    <main id="landing-page" class="landing-page">
+        <header class="site-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+            <button id="login-button" class="login-button" type="button">Log in</button>
+        </header>
+
+        <div class="landing-content">
+            <section class="hero-copy" aria-labelledby="landing-title">
+                <span class="eyebrow">Your data, sorted</span>
+                <h1 id="landing-title">More data.<br><span>More living.</span></h1>
+                <p class="hero-description">Stay online for the things that matter. Find a data bundle that fits your day and get connected in a few simple steps.</p>
+                <div class="hero-actions">
+                    <button class="login-button" type="button" data-open-login>Log in to continue <span aria-hidden="true">→</span></button>
+                    <span class="hero-note">Quick, easy bundle purchasing</span>
+                </div>
+                <p id="auth-connection-status" class="auth-error" role="status" aria-live="polite" hidden></p>
+            </section>
+
+            <section class="bundle-showcase" aria-label="Featured MTN data bundles">
+                <div class="bundle-orbit" aria-hidden="true"></div>
+                <div class="bundle-cards-container" id="bundle-cards-container">
+                    <article class="bundle-card front" data-index="0">
+                        <div class="bundle-card-top">
+                            <span>Featured bundle</span>
+                            <span class="mtn-logo" role="img" aria-label="MTN">MTN</span>
+                        </div>
+                        <p class="bundle-amount" data-size>—</p>
+                        <p class="bundle-price" data-price>—</p>
+                        <div class="bundle-card-bottom">
+                            <span>Available now</span>
+                            <strong>SARKI</strong>
+                        </div>
+                    </article>
+                    <article class="bundle-card left-back" data-index="1">
+                        <div class="bundle-card-top">
+                            <span>Popular</span>
+                            <span class="mtn-logo" role="img" aria-label="MTN">MTN</span>
+                        </div>
+                        <p class="bundle-amount" data-size>—</p>
+                        <p class="bundle-price" data-price>—</p>
+                        <div class="bundle-card-bottom">
+                            <span>Available now</span>
+                            <strong>SARKI</strong>
+                        </div>
+                    </article>
+                    <article class="bundle-card right-back" data-index="2">
+                        <div class="bundle-card-top">
+                            <span>Best value</span>
+                            <span class="mtn-logo" role="img" aria-label="MTN">MTN</span>
+                        </div>
+                        <p class="bundle-amount" data-size>—</p>
+                        <p class="bundle-price" data-price>—</p>
+                        <div class="bundle-card-bottom">
+                            <span>Available now</span>
+                            <strong>SARKI</strong>
+                        </div>
+                    </article>
+                </div>
+                <div class="app-store-badges" aria-label="SARKI mobile apps coming soon">
+                    <div class="store-badge" role="img" aria-label="Google Play, coming soon">
+                        <span class="store-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 3.5v17L18.5 12 5 3.5Z" fill="currentColor"></path>
+                            </svg>
+                        </span>
+                        <span class="store-badge-copy">
+                            <small>Coming soon</small>
+                            <strong>Google Play</strong>
+                        </span>
+                    </div>
+                    <div class="store-badge" role="img" aria-label="App Store, coming soon">
+                        <span class="store-badge-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="m9 14.5 5.5-11M9.6 3.5l7.2 14M6.5 14.5h12M8.4 18.5h7.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                        </span>
+                        <span class="store-badge-copy">
+                            <small>Coming soon</small>
+                            <strong>App Store</strong>
+                        </span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="site-footer">
+            <div class="trust-strip">
+                <span class="trust-copy">A simple way to get your next bundle.</span>
+                <div class="trust-points">
+                    <span>Choose your network</span>
+                    <span>Pick your data</span>
+                    <span>Stay connected</span>
+                </div>
+            </div>
+            <div class="footer-contact" aria-label="Contact SARKI">
+                <span>Need help?</span>
+                <a href="mailto:support@sarki.com.ng">support@sarki.com.ng</a>
+                <a href="https://www.instagram.com/sarkidata/" target="_blank" rel="noopener noreferrer">Instagram @sarkidata</a>
+                <a href="https://wa.me/+2349123040739">09123040739</a>
+            </div>
+            <span>© SARKI INTERNET SERVICES</span>
+        </div>
+    </main>
+
+    <main id="login-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+            <button class="screen-back-button" type="button" data-auth-home>Home</button>
+        </header>
+
+        <div class="screen-shell auth-shell">
+            <section class="auth-panel">
+                <p class="screen-kicker">Your account</p>
+                <h1 class="screen-title">Log in</h1>
+                <p class="screen-description">Enter your phone number and password to continue.</p>
+
+                <form id="login-form" class="auth-form">
+                    <label for="login-phone">Phone number</label>
+                    <input id="login-phone" name="phone" type="tel" inputmode="tel" placeholder="e.g. 08012345678 or +2348012345678" autocomplete="tel" required>
+
+                    <label for="login-password">Password</label>
+                    <input id="login-password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+
+                    <p id="login-error" class="auth-error" role="alert" aria-live="polite"></p>
+                    <button class="auth-submit" type="submit">Log in</button>
+                </form>
+
+                <p class="auth-switch">Don’t have an account? <button id="open-signup" type="button">Sign up</button></p>
+            </section>
+        </div>
+    </main>
+
+    <main id="signup-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+            <button class="screen-back-button" type="button" data-auth-home>Home</button>
+        </header>
+
+        <div class="screen-shell auth-shell">
+            <section class="auth-panel">
+                <p class="screen-kicker">Get started</p>
+                <h1 class="screen-title">Create an account</h1>
+                <p class="screen-description">Sign up with your phone number and a password.</p>
+
+                <form id="signup-form" class="auth-form">
+                    <label for="signup-phone">Phone number</label>
+                    <input id="signup-phone" name="phone" type="tel" inputmode="tel" placeholder="e.g. 08012345678 or +2348012345678" autocomplete="tel" required>
+
+                    <label for="signup-password">Password</label>
+                    <input id="signup-password" name="password" type="password" placeholder="Create a password" autocomplete="new-password" minlength="5" maxlength="128" required>
+                    <p class="auth-help">Use at least 5 characters.</p>
+
+                    <p id="signup-error" class="auth-error" role="alert" aria-live="polite"></p>
+                    <button class="auth-submit" type="submit">Sign up</button>
+                </form>
+
+                <p class="auth-switch">Already have an account? <button id="open-login" type="button">Log in</button></p>
+            </section>
+        </div>
+    </main>
+
+    <main id="wallet-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+        </header>
+
+        <div class="screen-shell">
+            <p class="screen-kicker">Welcome back</p>
+            <h1 class="screen-title">Your wallet</h1>
+            <p class="screen-description">Check your balance or head straight to a data bundle.</p>
+            <p id="wallet-error" class="auth-error" role="alert" aria-live="polite"></p>
+
+            <section id="wallet-card" class="wallet-card" aria-label="Your SARKI wallet">
+                <div class="wallet-card-inner">
+                    <div class="wallet-card-face wallet-card-front" aria-hidden="false">
+                        <div class="wallet-card-top">
+                            <span>SARKI WALLET</span>
+                            <span class="wallet-status">Available</span>
+                        </div>
+                        <p class="wallet-balance-label">Available balance</p>
+                        <p id="balance-amount" class="wallet-balance">₦0.00</p>
+                        <div class="wallet-card-bottom">
+                            <span>Ready for your next bundle</span>
+                            <span>SARKI</span>
+                        </div>
+                    </div>
+                    <div id="wallet-deposit-card" class="wallet-card-face wallet-card-back" aria-hidden="true" inert>
+                        <div class="wallet-card-top">
+                            <span>WALLET DEPOSIT</span>
+                            <span class="wallet-demo-badge">Demo only</span>
+                        </div>
+                        <div class="deposit-card-content">
+                            <span class="deposit-kicker">Payments are in development</span>
+                            <h2 class="deposit-title">Fund your wallet</h2>
+                            <p class="deposit-description">No payment will be taken in this demo.</p>
+                            <div class="deposit-gateway">
+                                <span>Planned gateway</span>
+                                <strong>Paystack or Monnify</strong>
+                            </div>
+                            <p class="deposit-note">Secure deposit details will appear here after a payment gateway is connected. Your balance will not change yet.</p>
+                        </div>
+                        <div class="wallet-card-bottom">
+                            <span>Deposits coming soon</span>
+                            <span>SARKI</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="wallet-actions">
+                <button id="data-button" class="wallet-action wallet-action-data" type="button">DATA <span aria-hidden="true">→</span></button>
+                <button id="deposit-button" class="wallet-action wallet-action-secondary deposit-toggle" type="button" aria-controls="wallet-card" aria-expanded="false">
+                    <span id="deposit-button-label">DEPOSIT</span>
+                    <span id="deposit-button-icon" aria-hidden="true">↗</span>
+                </button>
+            </div>
+            <p class="wallet-funding-notice">Deposits are a demo for now. Your balance must cover the selected bundle.</p>
+        </div>
+    </main>
+
+    <main id="plans-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+            <button id="plans-wallet-button" class="screen-back-button" type="button">Wallet</button>
+        </header>
+
+        <div class="screen-shell">
+            <section class="plans-panel">
+                <p class="screen-kicker">MTN data</p>
+                <h1 id="plans-title" class="screen-title" tabindex="-1">Choose a data plan</h1>
+                <p class="screen-description">Pick a bundle, then enter the recipient number.</p>
+
+                <div class="plan-table-wrap">
+                    <table class="plan-table" aria-label="Available MTN data plans">
+                        <thead>
+                            <tr>
+                                <th scope="col">Bundle</th>
+                                <th scope="col">Price</th>
+                                <th scope="col"><span class="visually-hidden">Select plan</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="plans-list">
+                            <tr><td class="plan-table-status" colspan="3">Loading plans…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="plans-error" class="auth-error" role="alert" aria-live="polite" hidden></p>
+                <button id="plans-retry-button" class="screen-back-button plan-retry-button" type="button" hidden>Try again</button>
+            </section>
+        </div>
+    </main>
+
+    <main id="purchase-page" class="app-screen" hidden>
+        <header class="app-header">
+            <div class="brand" aria-label="SARKI">
+                <span class="brand-mark" aria-hidden="true"><img class="brand-logo" src="/sarki-logo.jpg" alt=""></span>
+                <span>SARKI</span>
+            </div>
+            <button id="purchase-back-button" class="screen-back-button" type="button">Plans</button>
+        </header>
+
+        <div class="screen-shell">
+            <section class="purchase-panel">
+                <p class="screen-kicker">Stay connected</p>
+                <h1 class="screen-title">Buy MTN data</h1>
+                <p class="screen-description">Enter the recipient number for your selected MTN bundle.</p>
+
+                <div id="selected-bundle" class="selected-bundle" aria-live="polite">
+                    <span>MTN</span>
+                    <strong id="selected-bundle-size">Choose a plan</strong>
+                    <strong id="selected-bundle-price">—</strong>
+                </div>
+
+                <form id="purchase-form">
+                    <label for="recipient-phone">Recipient phone number</label>
+                    <input type="tel" id="recipient-phone" name="phone" inputmode="tel" placeholder="e.g. 08012345678" autocomplete="tel" required>
+
+                    <label class="ported-option" for="ported-number">
+                        <input type="checkbox" id="ported-number" name="portedNumber">
+                        This number has been ported to MTN
+                    </label>
+
+                    <p class="purchase-wallet-balance">Available wallet balance: <strong id="purchase-balance">₦0.00</strong></p>
+                    <p id="purchase-error" class="auth-error" role="alert" aria-live="polite" hidden></p>
+                    <p id="purchase-message" class="purchase-message" role="status" aria-live="polite" hidden></p>
+
+                    <button id="purchase-submit" type="submit" class="submit-btn" disabled>Choose a plan</button>
+                </form>
+
+                <section class="order-history" aria-labelledby="order-history-title">
+                    <h2 id="order-history-title">Recent data orders</h2>
+                    <ul id="order-history-list" class="order-history-list" aria-live="polite"></ul>
+                </section>
+            </section>
+        </div>
+    </main>
+
+    <div id="back-exit-notice" class="back-exit-notice" role="status" aria-live="polite" hidden>
+        Press back again to exit
+    </div>
+
+    <script>
+        const landingPage = document.getElementById('landing-page');
+        const loginPage = document.getElementById('login-page');
+        const signupPage = document.getElementById('signup-page');
+        const walletPage = document.getElementById('wallet-page');
+        const plansPage = document.getElementById('plans-page');
+        const purchasePage = document.getElementById('purchase-page');
+        const pages = [landingPage, loginPage, signupPage, walletPage, plansPage, purchasePage];
+        const authConnectionStatus = document.getElementById('auth-connection-status');
+        const landingLoginButton = document.getElementById('login-button');
+        const heroLoginButton = document.querySelector('[data-open-login]');
+        const bundleCardsContainer = document.getElementById('bundle-cards-container');
+        const walletCard = document.getElementById('wallet-card');
+        const walletCardFront = walletCard.querySelector('.wallet-card-front');
+        const walletCardBack = walletCard.querySelector('.wallet-card-back');
+        const depositButton = document.getElementById('deposit-button');
+        const depositButtonLabel = document.getElementById('deposit-button-label');
+        const depositButtonIcon = document.getElementById('deposit-button-icon');
+        const plansList = document.getElementById('plans-list');
+        const plansError = document.getElementById('plans-error');
+        const plansRetryButton = document.getElementById('plans-retry-button');
+        const selectedBundle = document.getElementById('selected-bundle');
+        const selectedBundleSize = document.getElementById('selected-bundle-size');
+        const selectedBundlePrice = document.getElementById('selected-bundle-price');
+        const purchaseForm = document.getElementById('purchase-form');
+        const purchaseSubmit = document.getElementById('purchase-submit');
+        const purchaseError = document.getElementById('purchase-error');
+        const purchaseMessage = document.getElementById('purchase-message');
+        const orderHistoryList = document.getElementById('order-history-list');
+        const SESSION_IDLE_TIMEOUT_MS = 5 * 60 * 1000;
+        const SESSION_REFRESH_INTERVAL_MS = 10 * 1000;
+        const LOGIN_REQUIRED_STORAGE_KEY = 'sarki:login-required';
+        const HAS_AUTHENTICATED_STORAGE_KEY = 'sarki:has-authenticated';
+        const BACK_EXIT_CONFIRMATION_MS = 2200;
+        let currentUser = null;
+        let dataPlans = [];
+        let dataPlansLoaded = false;
+        let dataPlansLoadPromise = null;
+        let selectedOfferId = null;
+        let sessionIdleTimer = null;
+        let lastUserActivityAt = 0;
+        let lastServerActivityAt = 0;
+        let sessionRefreshInFlight = false;
+        let purchaseInProgress = false;
+        let checkingOrderHistory = false;
+        let hasUnresolvedOrder = false;
+        let navigationInitialized = false;
+        let navigationIndex = 0;
+        let backExitArmedUntil = 0;
+        let backExitNoticeTimer = null;
+        let exitingAfterConfirmedBack = false;
+
+        function displayPage(page, focusTarget, { historyMode = 'push' } = {}) {
+            if (historyMode === 'push') {
+                const currentState = window.history.state;
+                if (!navigationInitialized) {
+                    navigationIndex = currentState?.sarkiApp === true
+                        && Number.isInteger(currentState.sarkiIndex)
+                        ? currentState.sarkiIndex
+                        : 0;
+                    window.history.replaceState({
+                        sarkiApp: true,
+                        sarkiScreen: page.id,
+                        sarkiIndex: navigationIndex
+                    }, '', window.location.href);
+                    navigationInitialized = true;
+                } else {
+                    const currentIndex = currentState?.sarkiApp === true
+                        && Number.isInteger(currentState.sarkiIndex)
+                        ? currentState.sarkiIndex
+                        : navigationIndex;
+                    navigationIndex = currentIndex + 1;
+                    window.history.pushState({
+                        sarkiApp: true,
+                        sarkiScreen: page.id,
+                        sarkiIndex: navigationIndex
+                    }, '', window.location.href);
+                }
+            } else if (historyMode === 'pop') {
+                const currentState = window.history.state;
+                if (currentState?.sarkiApp === true && Number.isInteger(currentState.sarkiIndex)) {
+                    navigationIndex = currentState.sarkiIndex;
+                }
+                navigationInitialized = true;
+            }
+
+            pages.forEach((screen) => {
+                screen.hidden = screen !== page;
+            });
+            if (focusTarget) focusTarget.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function isLoginRequiredInBrowser() {
+            try {
+                return window.localStorage.getItem(LOGIN_REQUIRED_STORAGE_KEY) === '1';
+            } catch {
+                return false;
+            }
+        }
+
+        function requireLoginInBrowser() {
+            try {
+                window.localStorage.setItem(LOGIN_REQUIRED_STORAGE_KEY, '1');
+                window.localStorage.setItem(HAS_AUTHENTICATED_STORAGE_KEY, '1');
+            } catch {
+                // Keep the current page protected even when browser storage is unavailable.
+            }
+        }
+
+        function markAuthenticatedInBrowser() {
+            try {
+                window.localStorage.setItem(HAS_AUTHENTICATED_STORAGE_KEY, '1');
+            } catch {
+                // The authenticated session still works if browser storage is unavailable.
+            }
+        }
+
+        function hasAuthenticatedBefore() {
+            try {
+                return window.localStorage.getItem(HAS_AUTHENTICATED_STORAGE_KEY) === '1'
+                    || window.localStorage.getItem(LOGIN_REQUIRED_STORAGE_KEY) === '1';
+            } catch {
+                return false;
+            }
+        }
+
+        function clearLoginRequiredInBrowser() {
+            try {
+                window.localStorage.removeItem(LOGIN_REQUIRED_STORAGE_KEY);
+            } catch {
+                // Authentication still succeeds; storage is only used to remember the login screen.
+            }
+        }
+
+        function setDepositCardShowing(showDeposit) {
+            walletCard.classList.toggle('is-flipped', showDeposit);
+            walletCardFront.setAttribute('aria-hidden', String(showDeposit));
+            walletCardFront.inert = showDeposit;
+            walletCardBack.setAttribute('aria-hidden', String(!showDeposit));
+            walletCardBack.inert = !showDeposit;
+            depositButton.setAttribute('aria-expanded', String(showDeposit));
+            depositButtonLabel.textContent = showDeposit ? 'BALANCE' : 'DEPOSIT';
+            depositButtonIcon.textContent = showDeposit ? '←' : '↗';
+        }
+
+        function updateLandingActions() {
+            landingLoginButton.textContent = currentUser ? 'My wallet' : 'Log in';
+            heroLoginButton.innerHTML = currentUser
+                ? 'Open my wallet <span aria-hidden="true">→</span>'
+                : 'Log in to continue <span aria-hidden="true">→</span>';
+        }
+
+        function formatBalance(balanceKobo) {
+            const kobo = BigInt(balanceKobo);
+            const naira = kobo / 100n;
+            const remainingKobo = String(kobo % 100n).padStart(2, '0');
+            return `₦${naira.toLocaleString('en-NG')}.${remainingKobo}`;
+        }
+
+        function formatPlanPrice(amountKobo) {
+            const kobo = BigInt(amountKobo);
+            const naira = kobo / 100n;
+            const remainingKobo = kobo % 100n;
+            return remainingKobo === 0n
+                ? `₦${naira.toLocaleString('en-NG')}`
+                : formatBalance(String(kobo));
+        }
+
+        function showLoginPage({ historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ historyMode });
+            document.getElementById('login-error').textContent = '';
+            const requireLogin = isLoginRequiredInBrowser();
+            document.querySelectorAll('[data-auth-home]').forEach((button) => {
+                button.hidden = requireLogin;
+            });
+            displayPage(loginPage, document.getElementById('login-phone'), { historyMode });
+        }
+
+        function showSignupPage({ historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ historyMode });
+            document.getElementById('signup-error').textContent = '';
+            displayPage(signupPage, document.getElementById('signup-phone'), { historyMode });
+        }
+
+        function showWalletPage({ focus = true, historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
+            setDepositCardShowing(false);
+            document.getElementById('balance-amount').textContent = formatBalance(currentUser.balanceKobo);
+            displayPage(walletPage, focus ? document.getElementById('data-button') : null, { historyMode });
+        }
+
+        function showPlansPage({ historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
+            displayPage(plansPage, document.getElementById('plans-title'), { historyMode });
+            if (dataPlansLoaded) renderDataPlans();
+            else loadDataPlans();
+        }
+
+        function showPurchasePage(offerId, { historyMode = 'push' } = {}) {
+            if (!currentUser) return showLoginPage({ historyMode });
+            if (offerId) selectedOfferId = offerId;
+            const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
+            if (!selectedPlan) return showPlansPage({ historyMode });
+
+            document.getElementById('purchase-balance').textContent = formatBalance(currentUser.balanceKobo);
+            selectedBundleSize.textContent = selectedPlan.size;
+            selectedBundlePrice.textContent = formatPlanPrice(selectedPlan.amountKobo);
+            selectedBundle.setAttribute(
+                'aria-label',
+                `Selected MTN ${selectedPlan.size} bundle for ${formatPlanPrice(selectedPlan.amountKobo)}`
+            );
+            updatePurchaseButton();
+            displayPage(purchasePage, document.getElementById('recipient-phone'), { historyMode });
+            loadRecentOrders();
+        }
+
+        function showLandingPage({ focus = true, historyMode = 'push' } = {}) {
+            if (currentUser) return showWalletPage({ focus: false, historyMode });
+            if (isLoginRequiredInBrowser()) return showLoginPage({ historyMode });
+            updateLandingActions();
+            displayPage(landingPage, focus ? landingLoginButton : null, { historyMode });
+        }
+
+        function showBackExitNotice() {
+            const notice = document.getElementById('back-exit-notice');
+            notice.hidden = false;
+            window.clearTimeout(backExitNoticeTimer);
+            backExitNoticeTimer = window.setTimeout(() => {
+                notice.hidden = true;
+            }, BACK_EXIT_CONFIRMATION_MS);
+        }
+
+        function handleAppBackNavigation(event) {
+            if (exitingAfterConfirmedBack) return;
+
+            const activePage = pages.find((page) => !page.hidden);
+            const isBackwardNavigation = event.state?.sarkiApp !== true
+                || !Number.isInteger(event.state.sarkiIndex)
+                || event.state.sarkiIndex < navigationIndex;
+            if (activePage === loginPage && hasAuthenticatedBefore() && isBackwardNavigation) {
+                const now = Date.now();
+                if (now < backExitArmedUntil) {
+                    backExitArmedUntil = 0;
+                    exitingAfterConfirmedBack = true;
+                    window.clearTimeout(backExitNoticeTimer);
+                    document.getElementById('back-exit-notice').hidden = true;
+                    const priorIndex = event.state?.sarkiApp === true
+                        && Number.isInteger(event.state.sarkiIndex)
+                        ? event.state.sarkiIndex
+                        : null;
+                    if (priorIndex !== null) {
+                        window.history.go(-(priorIndex + 1));
+                    }
+                    return;
+                }
+
+                backExitArmedUntil = now + BACK_EXIT_CONFIRMATION_MS;
+                showBackExitNotice();
+                const priorIndex = event.state?.sarkiApp === true
+                    && Number.isInteger(event.state.sarkiIndex)
+                    ? event.state.sarkiIndex
+                    : Math.max(0, navigationIndex - 1);
+                navigationIndex = priorIndex + 1;
+                window.history.pushState({
+                    sarkiApp: true,
+                    sarkiScreen: loginPage.id,
+                    sarkiIndex: navigationIndex
+                }, '', window.location.href);
+                return;
+            }
+
+            if (event.state?.sarkiApp !== true) return;
+            const requestedPage = pages.find((page) => page.id === event.state.sarkiScreen);
+            if (!requestedPage) return;
+
+            if (currentUser) {
+                if (requestedPage === landingPage || requestedPage === loginPage || requestedPage === signupPage) {
+                    return showWalletPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === walletPage) {
+                    return showWalletPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === plansPage) {
+                    return showPlansPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === purchasePage) {
+                    return showPurchasePage(undefined, { historyMode: 'pop' });
+                }
+            } else {
+                if (requestedPage === walletPage || requestedPage === plansPage || requestedPage === purchasePage) {
+                    return isLoginRequiredInBrowser()
+                        ? showLoginPage({ historyMode: 'pop' })
+                        : showLandingPage({ focus: false, historyMode: 'pop' });
+                }
+                if (requestedPage === landingPage && isLoginRequiredInBrowser()) {
+                    return showLoginPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === loginPage) {
+                    return showLoginPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === signupPage) {
+                    return showSignupPage({ historyMode: 'pop' });
+                }
+                if (requestedPage === landingPage) {
+                    return showLandingPage({ focus: false, historyMode: 'pop' });
+                }
+            }
+        }
+
+        async function requestJson(path, { method = 'GET', body } = {}) {
+            const options = {
+                method,
+                credentials: 'same-origin',
+                headers: {}
+            };
+            if (body !== undefined) {
+                options.headers['Content-Type'] = 'application/json';
+                options.body = JSON.stringify(body);
+            }
+            const response = await fetch(path, options);
+            const payload = await response.json().catch(() => null);
+            if (!response.ok) {
+                const error = new Error(payload?.error || 'The request could not be completed. Please try again.');
+                error.status = response.status;
+                if (
+                    response.status === 401
+                    && path !== '/api/auth/login'
+                    && path !== '/api/auth/signup'
+                ) {
+                    expireSession();
+                }
+                throw error;
+            }
+            return payload;
+        }
+
+        function scheduleSessionExpiry() {
+            window.clearTimeout(sessionIdleTimer);
+            const remaining = SESSION_IDLE_TIMEOUT_MS - (Date.now() - lastUserActivityAt);
+            if (remaining <= 0) {
+                expireSession();
+                return;
+            }
+            sessionIdleTimer = window.setTimeout(expireSession, remaining);
+        }
+
+        function beginSessionTracking() {
+            window.clearTimeout(sessionIdleTimer);
+            lastUserActivityAt = Date.now();
+            lastServerActivityAt = Date.now();
+            scheduleSessionExpiry();
+        }
+
+        function expireSession() {
+            if (!currentUser) return;
+            requireLoginInBrowser();
+            currentUser = null;
+            window.clearTimeout(sessionIdleTimer);
+            sessionIdleTimer = null;
+            lastUserActivityAt = 0;
+            lastServerActivityAt = 0;
+            updateLandingActions();
+            showLoginPage();
+            document.getElementById('login-error').textContent =
+                'Your session ended after 5 minutes of inactivity. Please log in again.';
+        }
+
+        async function refreshServerSession() {
+            if (!currentUser || sessionRefreshInFlight) return;
+            sessionRefreshInFlight = true;
+            try {
+                await requestJson('/api/auth/activity', { method: 'POST' });
+                lastServerActivityAt = Date.now();
+            } catch {
+                // A later authenticated request will log the user out if the session has expired.
+            } finally {
+                sessionRefreshInFlight = false;
+            }
+        }
+
+        function recordUserActivity() {
+            if (!currentUser) return;
+            lastUserActivityAt = Date.now();
+            scheduleSessionExpiry();
+            if (Date.now() - lastServerActivityAt >= SESSION_REFRESH_INTERVAL_MS) {
+                refreshServerSession();
+            }
+        }
+
+        function checkSessionOnReturn() {
+            if (!currentUser) return;
+            if (Date.now() - lastUserActivityAt >= SESSION_IDLE_TIMEOUT_MS) {
+                expireSession();
+            } else {
+                scheduleSessionExpiry();
+            }
+        }
+
+        function setPlansStatus(message) {
+            plansList.replaceChildren();
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.className = 'plan-table-status';
+            cell.colSpan = 3;
+            cell.textContent = message;
+            row.append(cell);
+            plansList.append(row);
+        }
+
+        function renderDataPlans() {
+            plansList.replaceChildren();
+            dataPlans.forEach((plan) => {
+                const row = document.createElement('tr');
+                row.classList.toggle('is-selected', plan.offerId === selectedOfferId);
+
+                const bundleCell = document.createElement('td');
+                const bundle = document.createElement('div');
+                bundle.className = 'plan-bundle';
+                const network = document.createElement('span');
+                network.className = 'plan-network';
+                network.textContent = 'MTN';
+                const size = document.createElement('strong');
+                size.className = 'plan-size';
+                size.textContent = plan.size;
+                bundle.append(network, size);
+                bundleCell.append(bundle);
+
+                const priceCell = document.createElement('td');
+                const price = document.createElement('strong');
+                price.className = 'plan-price';
+                price.textContent = formatPlanPrice(plan.amountKobo);
+                priceCell.append(price);
+
+                const actionCell = document.createElement('td');
+                const chooseButton = document.createElement('button');
+                chooseButton.type = 'button';
+                chooseButton.className = 'plan-select-button';
+                chooseButton.textContent = 'Choose';
+                chooseButton.setAttribute(
+                    'aria-label',
+                    `Choose MTN ${plan.size} for ${formatPlanPrice(plan.amountKobo)}`
+                );
+                chooseButton.addEventListener('click', () => showPurchasePage(plan.offerId));
+                actionCell.append(chooseButton);
+
+                row.append(bundleCell, priceCell, actionCell);
+                plansList.append(row);
+            });
+        }
+
+        function setLandingPlansError() {
+            if (!bundleCardsContainer) return;
+            bundleCardsContainer.querySelectorAll('[data-size]').forEach(el => { el.textContent = '—'; });
+            bundleCardsContainer.querySelectorAll('[data-price]').forEach(el => { el.textContent = '—'; });
+        }
+
+        let bundleCarouselIndex = 0;
+        let bundleCarouselTimer = null;
+
+        function fillBundleCard(card, plan) {
+            if (!plan) {
+                card.querySelector('[data-size]').textContent = '—';
+                card.querySelector('[data-price]').textContent = '—';
+                return;
+            }
+            const sizeEl = card.querySelector('[data-size]');
+            sizeEl.replaceChildren();
+            const sizeParts = String(plan.size).match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+            if (sizeParts) {
+                sizeEl.append(document.createTextNode(sizeParts[1]));
+                if (sizeParts[2]) {
+                    const unit = document.createElement('small');
+                    unit.textContent = sizeParts[2];
+                    sizeEl.append(unit);
+                }
+            } else {
+                sizeEl.textContent = plan.size;
+            }
+            card.querySelector('[data-price]').textContent = formatPlanPrice(plan.amountKobo);
+        }
+
+        function applyBundlePositions() {
+            if (!bundleCardsContainer) return;
+            const cards = Array.from(bundleCardsContainer.querySelectorAll('.bundle-card'));
+            const positions = ['front', 'left-back', 'right-back'];
+            cards.forEach((card, i) => {
+                const posIndex = (i - bundleCarouselIndex + 3) % 3;
+                card.className = 'bundle-card ' + positions[posIndex];
+            });
+        }
+
+        function cycleBundles() {
+            bundleCarouselIndex = (bundleCarouselIndex + 1) % 3;
+            applyBundlePositions();
+        }
+
+        function startBundleCarousel() {
+            if (bundleCarouselTimer) clearInterval(bundleCarouselTimer);
+            bundleCarouselTimer = setInterval(cycleBundles, 2000);
+        }
+
+        function renderLandingBundles() {
+            if (!bundleCardsContainer || !dataPlans.length) {
+                setLandingPlansError();
+                return;
+            }
+            const cards = Array.from(bundleCardsContainer.querySelectorAll('.bundle-card'));
+            // Show up to 3 plans, cycling if fewer
+            for (let i = 0; i < cards.length; i++) {
+                const plan = dataPlans[i % dataPlans.length];
+                fillBundleCard(cards[i], plan);
+            }
+            applyBundlePositions();
+            startBundleCarousel();
+        }
+
+        function loadDataPlans() {
+            if (dataPlansLoaded) {
+                renderDataPlans();
+                renderLandingBundles();
+                return Promise.resolve(dataPlans);
+            }
+            if (dataPlansLoadPromise) return dataPlansLoadPromise;
+
+            plansError.hidden = true;
+            plansRetryButton.hidden = true;
+            setPlansStatus('Loading plans…');
+
+            dataPlansLoadPromise = (async () => {
+                try {
+                    const result = await requestJson('/api/data/plans');
+                    if (
+                        !Array.isArray(result?.plans)
+                        || result.plans.length === 0
+                        || result.plans.some((plan) => (
+                            !plan
+                            || typeof plan.offerId !== 'string'
+                            || typeof plan.size !== 'string'
+                            || !/^\d+$/.test(String(plan.amountKobo))
+                        ))
+                    ) {
+                        throw new Error('No data plans are available right now.');
+                    }
+                    dataPlans = result.plans;
+                    renderDataPlans();
+                    renderLandingBundles();
+                    dataPlansLoaded = true;
+                    return dataPlans;
+                } catch {
+                    setPlansStatus('Plans could not be loaded.');
+                    plansError.textContent = 'Please check your connection and try again.';
+                    plansError.hidden = false;
+                    plansRetryButton.hidden = false;
+                    setLandingPlansError();
+                    return null;
+                } finally {
+                    dataPlansLoadPromise = null;
+                }
+            })();
+            return dataPlansLoadPromise;
+        }
+
+        function purchaseKeyStorageName() {
+            return `sarki-purchase-key:${currentUser?.phone || 'guest'}`;
+        }
+
+        function getPurchaseIdempotencyKey() {
+            const storageKey = purchaseKeyStorageName();
+            let key = sessionStorage.getItem(storageKey);
+            if (!key) {
+                key = crypto.randomUUID();
+                sessionStorage.setItem(storageKey, key);
+            }
+            return key;
+        }
+
+        function clearPurchaseIdempotencyKey() {
+            sessionStorage.removeItem(purchaseKeyStorageName());
+        }
+
+        function updatePurchaseButton() {
+            const selectedPlan = dataPlans.find((plan) => plan.offerId === selectedOfferId);
+            purchaseSubmit.disabled = purchaseInProgress || checkingOrderHistory || hasUnresolvedOrder || !selectedPlan;
+            purchaseSubmit.textContent = purchaseInProgress
+                ? 'Submitting…'
+                : hasUnresolvedOrder
+                    ? 'Order awaiting confirmation'
+                    : selectedPlan
+                        ? `Buy ${selectedPlan.size} — ${formatPlanPrice(selectedPlan.amountKobo)}`
+                        : 'Choose a plan';
+        }
+
+        function statusLabel(status) {
+            return ({
+                processing: 'Processing',
+                pending: 'Awaiting provider confirmation',
+                submitted: 'Submitted to provider',
+                successful: 'Successful',
+                failed: 'Failed — wallet refunded'
+            })[status] || 'Status unavailable';
+        }
+
+        function renderOrderHistory(orders) {
+            orderHistoryList.replaceChildren();
+            if (!orders.length) {
+                const item = document.createElement('li');
+                item.textContent = 'No data orders yet.';
+                orderHistoryList.append(item);
+                return;
+            }
+
+            for (const order of orders) {
+                const item = document.createElement('li');
+                const title = document.createElement('strong');
+                title.textContent = `${order.product} — ${statusLabel(order.status)}`;
+                const details = document.createElement('span');
+                const orderDate = new Date(order.createdAt);
+                const dateText = Number.isNaN(orderDate.getTime())
+                    ? ''
+                    : ` · ${orderDate.toLocaleString('en-NG')}`;
+                details.textContent = `${order.recipient} · ${formatBalance(order.amountKobo)}${dateText}`;
+                item.append(title, details);
+                if (order.providerReference) {
+                    const reference = document.createElement('span');
+                    reference.textContent = `Provider reference: ${order.providerReference}`;
+                    item.append(reference);
+                }
+                orderHistoryList.append(item);
+            }
+        }
+
+        async function loadRecentOrders() {
+            if (!currentUser) return;
+            checkingOrderHistory = true;
+            updatePurchaseButton();
+            try {
+                const result = await requestJson('/api/data/orders');
+                const orders = Array.isArray(result.orders) ? result.orders : [];
+                renderOrderHistory(orders);
+
+                const storedKey = sessionStorage.getItem(purchaseKeyStorageName());
+                const matchingOrder = storedKey
+                    ? orders.find((order) => order.idempotencyKey === storedKey)
+                    : null;
+                if (matchingOrder && !['pending', 'processing'].includes(matchingOrder.status)) {
+                    clearPurchaseIdempotencyKey();
+                }
+
+                const unresolvedOrder = orders.find((order) => (
+                    ['pending', 'processing'].includes(order.status)
+                ));
+                hasUnresolvedOrder = Boolean(unresolvedOrder);
+                if (unresolvedOrder) {
+                    purchaseMessage.textContent = `An earlier ${unresolvedOrder.product} order is awaiting provider confirmation. Its ${formatPlanPrice(unresolvedOrder.amountKobo)} debit is held to prevent a duplicate purchase.`;
+                    purchaseMessage.dataset.state = 'pending';
+                    purchaseMessage.hidden = false;
+                } else if (purchaseMessage.dataset.state === 'pending') {
+                    purchaseMessage.textContent = '';
+                    purchaseMessage.hidden = true;
+                }
+            } catch {
+                orderHistoryList.replaceChildren();
+                const item = document.createElement('li');
+                item.textContent = 'Order history is temporarily unavailable. Refresh before placing another order.';
+                orderHistoryList.append(item);
+                hasUnresolvedOrder = true;
+            } finally {
+                checkingOrderHistory = false;
+                updatePurchaseButton();
+            }
+        }
+
+        purchaseForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!currentUser) return showLoginPage();
+
+            purchaseError.textContent = '';
+            purchaseError.hidden = true;
+            purchaseMessage.textContent = '';
+            purchaseMessage.hidden = true;
+            purchaseInProgress = true;
+            updatePurchaseButton();
+
+            try {
+                const result = await requestJson('/api/data/purchase', {
+                    method: 'POST',
+                    body: {
+                        phone: document.getElementById('recipient-phone').value,
+                        portedNumber: document.getElementById('ported-number').checked,
+                        idempotencyKey: getPurchaseIdempotencyKey(),
+                        offerId: selectedOfferId
+                    }
+                });
+                currentUser.balanceKobo = result.balanceKobo;
+                document.getElementById('balance-amount').textContent = formatBalance(currentUser.balanceKobo);
+                document.getElementById('purchase-balance').textContent = formatBalance(currentUser.balanceKobo);
+
+                purchaseMessage.textContent = result.message;
+                purchaseMessage.dataset.state = result.order?.status || 'submitted';
+                purchaseMessage.hidden = false;
+                hasUnresolvedOrder = ['pending', 'processing'].includes(result.order?.status);
+                if (hasUnresolvedOrder) {
+                    sessionStorage.setItem(purchaseKeyStorageName(), result.order.idempotencyKey);
+                } else {
+                    clearPurchaseIdempotencyKey();
+                }
+                await loadRecentOrders();
+            } catch (error) {
+                purchaseError.textContent = error.message || 'The data purchase could not be completed.';
+                purchaseError.hidden = false;
+            } finally {
+                purchaseInProgress = false;
+                updatePurchaseButton();
+            }
+        });
+
+        async function submitAuthForm(event, form, endpoint, errorElement) {
+            event.preventDefault();
+            errorElement.textContent = '';
+            const submitButton = form.querySelector('.auth-submit');
+            const originalLabel = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Please wait…';
+
+            try {
+                const credentials = Object.fromEntries(new FormData(form).entries());
+                const result = await requestJson(endpoint, { method: 'POST', body: credentials });
+                currentUser = result.user;
+                markAuthenticatedInBrowser();
+                clearLoginRequiredInBrowser();
+                beginSessionTracking();
+                authConnectionStatus.hidden = true;
+                authConnectionStatus.textContent = '';
+                document.getElementById('wallet-error').textContent = '';
+                form.reset();
+                updateLandingActions();
+                showWalletPage();
+            } catch (error) {
+                errorElement.textContent = error.message || 'Unable to sign in right now. Please try again.';
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalLabel;
+            }
+        }
+
+        async function restoreSession() {
+            try {
+                const result = await requestJson('/api/auth/me');
+                currentUser = result.user;
+                authConnectionStatus.hidden = true;
+                authConnectionStatus.textContent = '';
+                updateLandingActions();
+                if (currentUser) {
+                    markAuthenticatedInBrowser();
+                    clearLoginRequiredInBrowser();
+                    beginSessionTracking();
+                    showWalletPage({ focus: false });
+                } else if (result.sessionExpired) {
+                    requireLoginInBrowser();
+                    showLoginPage();
+                    document.getElementById('login-error').textContent =
+                        'Your session ended. Please log in again.';
+                } else if (isLoginRequiredInBrowser()) {
+                    showLoginPage();
+                } else {
+                    showLandingPage({ focus: false });
+                }
+            } catch {
+                if (isLoginRequiredInBrowser()) {
+                    showLoginPage();
+                    document.getElementById('login-error').textContent =
+                        'Account services are temporarily unavailable. Please try again shortly.';
+                } else {
+                    authConnectionStatus.textContent = 'Account services are temporarily unavailable. Please try again shortly.';
+                    authConnectionStatus.hidden = false;
+                }
+            } finally {
+                document.body.classList.remove('session-checking');
+            }
+        }
+
+        const openAccount = () => currentUser ? showWalletPage() : showLoginPage();
+        landingLoginButton.addEventListener('click', openAccount);
+        heroLoginButton.addEventListener('click', openAccount);
+        document.getElementById('open-signup').addEventListener('click', showSignupPage);
+        document.getElementById('open-login').addEventListener('click', showLoginPage);
+        document.querySelectorAll('[data-auth-home]').forEach((button) => {
+            button.addEventListener('click', () => showLandingPage());
+        });
+        document.getElementById('login-form').addEventListener('submit', (event) => {
+            submitAuthForm(event, event.currentTarget, '/api/auth/login', document.getElementById('login-error'));
+        });
+        document.getElementById('signup-form').addEventListener('submit', (event) => {
+            submitAuthForm(event, event.currentTarget, '/api/auth/signup', document.getElementById('signup-error'));
+        });
+        document.getElementById('data-button').addEventListener('click', showPlansPage);
+        depositButton.addEventListener('click', () => {
+            setDepositCardShowing(depositButton.getAttribute('aria-expanded') !== 'true');
+        });
+        document.getElementById('plans-wallet-button').addEventListener('click', () => showWalletPage());
+        document.getElementById('plans-retry-button').addEventListener('click', loadDataPlans);
+        document.getElementById('purchase-back-button').addEventListener('click', showPlansPage);
+        ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'wheel'].forEach((eventName) => {
+            document.addEventListener(eventName, recordUserActivity, { passive: true });
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') checkSessionOnReturn();
+        });
+        window.addEventListener('focus', checkSessionOnReturn);
+        window.addEventListener('popstate', handleAppBackNavigation);
+
+        loadDataPlans();
+        restoreSession();
+    </script>
+</body>
+</html>
